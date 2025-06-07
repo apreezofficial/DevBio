@@ -73,7 +73,6 @@ function sendVerificationEmail($email, $code, $token) {
         $mail->send();
         return true;
     } catch (Exception $e) {
-        echo "Mailer Error: {$mail->ErrorInfo}";
         return false;
     }
 }
@@ -211,7 +210,7 @@ $timeLeft = max(0, 600 - (time() - $codeSentTime));
     <!-- Verification Code Form -->
     <div class="max-w-md mx-auto mt-16 p-8 rounded-3xl glass-effect shadow-xl transition-colors duration-500">
     <h2 class="text-2xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">Verify Your Email</h2>
-    <p class="mb-4">We sent a code to <strong><?= htmlspecialchars($_SESSION['pending_email']) ?></strong></p>
+    <p class="mb-4">We sent a code to <strong><?= htmlspecialchars($_SESSION['pending_email']) ?></strong><br>If you can't enter the code now.We also sent a link along side, use that at your convenuence to verify your mail</p>
     <?php if ($timeLeft > 0): ?>
       <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
         Code expires in: <span id="timer" class="font-mono"><?= gmdate("i:s", $timeLeft) ?></span>

@@ -14,4 +14,4 @@
     });
   }
   adjustVisibility();
-  setInterval(adjustVisibility, 100);
+  setInterval(adjustVisibility, 150);

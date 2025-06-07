@@ -1,5 +1,7 @@
 includes/font-awesome/
 admin/
+PHPMailer/
 .git/
+prand/
 docs/
 dashboard/.env

@@ -189,7 +189,7 @@ $timeLeft = max(0, 600 - (time() - $codeSentTime));
   <meta charset="UTF-8" />
   <title><?php echo $appName;?> Signup</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="../tailwind.js"></script>  <script src="../includes/ts/theme.ts"></script>
+  <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
         <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="../includes/css/body.css">
   <script>
@@ -387,6 +387,6 @@ if (timerEl) {
   }, 1000);
 }
 </script>
-  <script src="../includes/ts/otp.ts"></script>
-    <script src="../includes/ts/password.ts"></script>
+  <script src="../includes/js/otp.js"></script>
+    <script src="../includes/js/password.js"></script>
 </html>

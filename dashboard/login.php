@@ -54,7 +54,7 @@ exit;
   <meta charset="UTF-8" />
   <title><?php echo $appName;?> Logib</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="../tailwind.js"></script>  <script src="../includes/ts/theme.ts"></script>
+  <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
         <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="../includes/css/body.css">
   <script>
@@ -150,5 +150,5 @@ exit;
 </div>
     </div>
 </body>
-    <script src="../includes/ts/password.ts"></script>
+    <script src="../includes/js/password.js"></script>
 </html>

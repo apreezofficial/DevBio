@@ -432,14 +432,14 @@ require 'includes/settings.php';
   </div>
 </section>
   </main>
-    <script src="/includes/ts/slider.ts"></script>
-        <script src="/includes/ts/contact.ts"></script>
-        <script src="/includes/ts/subscribe.ts"></script>
-        <script src="/includes/ts/faq.ts"></script>
-                <script src="/includes/ts/counter.ts"></script>
-  <script src="/includes/ts/theme.ts"></script>
-                <script src="/includes/ts/headertext.ts"></script>
-  <script src="/includes/ts/movingcds.ts"></script>
+    <script src="/includes/js/slider.js"></script>
+        <script src="/includes/js/contact.js"></script>
+        <script src="/includes/js/subscribe.js"></script>
+        <script src="/includes/js/faq.js"></script>
+                <script src="/includes/js/counter.js"></script>
+  <script src="/includes/js/theme.js"></script>
+                <script src="/includes/js/headertext.js"></script>
+  <script src="/includes/js/movingcds.js"></script>
 </body>
 </html>
 <?php

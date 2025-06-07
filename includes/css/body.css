@@ -1,0 +1,16 @@
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  .glass-effect {
+    background: rgba(255 255 255 / 0.12);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255 255 255 / 0.1);
+  }
+  body.dark {
+    background-color: #0f172a;
+    color: #e0e7ff;
+  }
+  body.light {
+    background-color: #f9fafb;
+    color: #1e293b;
+  }

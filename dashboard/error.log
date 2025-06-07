@@ -1,0 +1,7 @@
+[05-Jun-2025 23:57:51 UTC] PHP Warning:  include(pdo.php): Failed to open stream: No such file or directory in /storage/emulated/0/Presh/profree/code/dashboard/petty.php on line 20
+[05-Jun-2025 23:57:51 UTC] PHP Warning:  include(): Failed opening 'pdo.php' for inclusion (include_path='.:') in /storage/emulated/0/Presh/profree/code/dashboard/petty.php on line 20
+[05-Jun-2025 23:57:51 UTC] PHP Warning:  Undefined variable $pdo in /storage/emulated/0/Presh/profree/code/dashboard/petty.php on line 24
+[05-Jun-2025 23:57:51 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /storage/emulated/0/Presh/profree/code/dashboard/petty.php:24
+Stack trace:
+#0 {main}
+  thrown in /storage/emulated/0/Presh/profree/code/dashboard/petty.php on line 24

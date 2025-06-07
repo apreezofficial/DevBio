@@ -1,6 +1,6 @@
 admin/
 PHPMailer/
-includes/font-awesome
+includes/font-awesome/
 .git/
 prand/
 docs/

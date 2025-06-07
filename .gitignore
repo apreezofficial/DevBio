@@ -4,3 +4,4 @@ PHPMailer/
 .git/
 prand/
 docs/
+dashboard/.env

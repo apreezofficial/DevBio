@@ -1,13 +1,16 @@
 <?php
 session_start();
+require '../vendor/autoload.php';
 require '../includes/pdo.php';
 require '../includes/settings.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
-require '../PHPMailer/src/Exception.php';
 $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+error_reporting(1);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 function sendVerificationEmail($email, $code, $token) {
     $mail = new PHPMailer(true);
@@ -15,21 +18,23 @@ function sendVerificationEmail($email, $code, $token) {
     try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host       = 'panel909.harmondns.net';
+        $mail->Host       = $_ENV['MAIL_HOST'];
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'admin.apx@preciousadedokun.com.ng';
-        $mail->Password   = 'Apcodesphere001';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-$mail->SMTPOptions = [
-    'ssl' => [
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-        'allow_self_signed' => true,
-    ],
-];
+        $mail->Username   = $_ENV['MAIL_USERNAME'];
+        $mail->Password   = $_ENV['MAIL_PASSWORD'];
+        $mail->SMTPSecure = $_ENV['MAIL_ENCRYPTION'] ?? PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = $_ENV['MAIL_PORT'];
+
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true,
+            ],
+        ];
+
         // Recipients
-        $mail->setFrom('no-reply@devbio.com', 'DevBio');
+        $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_NAME']);
         $mail->addAddress($email);
 
         // Content
@@ -66,10 +71,10 @@ $mail->SMTPOptions = [
         ";
 
         $mail->send();
-        return true;  // success
+        return true;
     } catch (Exception $e) {
-      echo("Mailer Error: {$mail->ErrorInfo}");
-        return false; // failure
+        echo "Mailer Error: {$mail->ErrorInfo}";
+        return false;
     }
 }
 // Initialization
@@ -174,7 +179,6 @@ if (isset($_GET['resend']) && isset($_SESSION['pending_email'])) {
         }
     }
 }
-m
 $codeSentTime = $_SESSION['code_sent_time'] ?? 0;
 $timeLeft = max(0, 600 - (time() - $codeSentTime));
 ?>

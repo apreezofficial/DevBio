@@ -4,7 +4,6 @@ require '../vendor/autoload.php';
 require '../includes/pdo.php';
 require '../includes/settings.php';
 $isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
-error_reporting(1);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;

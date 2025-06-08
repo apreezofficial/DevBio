@@ -1,5 +1,6 @@
-includes/font-awesome/
+includes/font-awesome/js/
 admin/
 .git/
 docs/
 dashboard/.env
+resumes/

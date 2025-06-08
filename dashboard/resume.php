@@ -32,7 +32,7 @@
 <div class="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
   <h2 class="text-2xl font-bold text-center text-blue-600 dark:text-purple-400 mb-6">Resume Builder</h2>
 
-  <form id="resumeForm" action="process.php" method="POST">
+  <form id="resumeForm" method="POST">
 <!-- Step Indicator -->
 <div class="flex flex-wrap justify-between gap-2 text-sm text-gray-500 dark:text-gray-400 mb-6">
   <span class="step flex items-center gap-1">
@@ -64,24 +64,24 @@
     <!-- Step 1: Bio -->
     <div class="step-panel" id="step-1">
       <div class="mb-4">
-        <label class="block mb-2 font-medium">Full Name</label>
+        <label class="block mb-2 font-medium">Full Name  <span class="text-red-500">*</span></label>
         <input name="fullname" id="fullname" required type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
       </div>
       <div class="mb-4">
-        <label class="block mb-2 font-medium">Position Title</label>
-        <input name="position" id="required position" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="e.g., Full Stack Developer" />
+        <label class="block mb-2 font-medium">Position Title  <span class="text-red-500">*</span></label>
+        <input name="position" id="position" required type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" placeholder="e.g., Full Stack Developer" />
       </div>
     </div>
 
     <!-- Step 2: Contact -->
     <div class="step-panel hidden" id="step-2">
       <div class="mb-4">
-        <label class="block mb-2 font-medium">Email Address</label>
-        <input name="email" id="email" type="email" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+        <label class="block mb-2 font-medium">Email Address <span class="text-red-500">*</span></label>
+        <input name="email" id="email" type="email" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
       </div>
       <div class="mb-4">
-        <label class="block mb-2 font-medium">Phone</label>
-        <input name="phone" id="phone" type="text" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+        <label class="block mb-2 font-medium">Phone  <span class="text-red-500">*</span></label>
+        <input name="phone" id="phone" type="text" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
       </div>
       <div class="mb-4">
         <label class="block mb-2 font-medium">Location</label>
@@ -91,8 +91,8 @@
 
 <div class="step-panel hidden" id="step-3">
   <div class="mb-4">
-    <label class="block mb-2 font-medium">Professional Summary</label>
-    <textarea name="summary" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" rows="4" placeholder="Brief summary about yourself..."></textarea>
+    <label class="block mb-2 font-medium">Professional Summary  <span class="text-red-500">*</span></label>
+    <textarea name="summary" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" rows="4" placeholder="Brief summary about yourself..."></textarea>
   </div>
 </div>
 <div class="step-panel hidden" id="step-4">
@@ -162,6 +162,7 @@
     </div>
   </form>
 </div>
+<div id="result"></div>
 <script>
   const steps = document.querySelectorAll('.step');
   const panels = document.querySelectorAll('.step-panel');
@@ -252,6 +253,95 @@
     clone.querySelectorAll("input").forEach(input => input.value = "");
     container.appendChild(clone);
   }
+</script>
+<div id="resultBoxWrapper" class="hidden mt-6 p-4 rounded-2xl bg-gray-100 dark:bg-gray-800 shadow-lg">
+  <div id="resultBox" class="whitespace-pre-wrap p-4 bg-white dark:bg-gray-900 rounded-xl text-sm text-gray-900 dark:text-gray-100 max-h-96 overflow-y-auto font-mono border border-gray-300 dark:border-gray-700"></div>
+
+  <div class="mt-4 flex flex-wrap gap-3 items-center">
+    <button id="copy" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">📋 Copy</button>
+    
+    <button id="download" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">📥 Download</button>
+    
+    <select id="fileType" class="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+      <option value="pdf">PDF</option>
+      <option value="txt">TXT</option>
+      <option value="md">Markdown</option>
+    </select>
+
+    <button id="linkBtn" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">🔗 Get Link</button>
+  </div>
+
+  <input type="text" id="generatedLink" readonly class="hidden mt-3 w-full p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100" />
+</div>
+<script>
+document.getElementById('resumeForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const resultBox = document.getElementById('resultBox');
+  const wrapper = document.getElementById('resultBoxWrapper');
+  const linkInput = document.getElementById('generatedLink');
+  const formatSelect = document.getElementById('fileType');
+
+  resultBox.textContent = '⏳ Generating resume...';
+  wrapper.classList.remove('hidden');
+
+  const data = new FormData(form);
+  const res = await fetch('process.php', { method: 'POST', body: data });
+  const json = await res.json();
+
+  if (json.success) {
+    const resume = json.resume;
+    resultBox.textContent = resume;
+
+    const timestamp = Date.now();
+    const ext = formatSelect.value;
+    const filename = `resume_${timestamp}.${ext}`;
+    const fileUrl = `${location.origin}/resumes/${filename}`;
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }, 100);
+    // 📦 Save to server
+    await fetch('save_resume.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: resume, ext: ext, filename: filename })
+    });
+
+    // 📋 Copy
+    document.getElementById('copy').onclick = () => {
+      navigator.clipboard.writeText(resume)
+        .then(() => alert('📋 Resume copied!'))
+        .catch(() => alert('❌ Failed to copy.'));
+    };
+
+    // 📥 Download
+    document.getElementById('download').onclick = () => {
+      const mimeTypes = {
+        pdf: 'application/pdf',
+        txt: 'text/plain',
+        md: 'text/markdown'
+      };
+      const blob = new Blob([resume], { type: mimeTypes[ext] });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+    };
+
+    // 🔗 Link generation
+    document.getElementById('linkBtn').onclick = () => {
+      linkInput.classList.remove('hidden');
+      linkInput.value = fileUrl;
+    };
+
+  } else {
+    resultBox.textContent = `❌ Error: ${json.message || 'Unknown error.'}`;
+  }
+});
 </script>
     <script src="../includes/js/theme.js"></script>
 </body>

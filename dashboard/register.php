@@ -41,7 +41,7 @@ function sendVerificationEmail($email, $code, $token) {
         $mail->isHTML(true);
         $mail->Subject = '🔒 Verify your DevBio Account';
 
-        $link = "http://{$_SERVER['HTTP_HOST']}/verify.php?token=$token";
+        $link = "http://{$_SERVER['HTTP_HOST']}/dashboard/verify.php?token=$token";
 
         $mail->Body = "
         <html>

@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_SESSION['redirect_url']); // Optional: clear after use
     header("Location: $url");
 } else {
-    header("Location: /dashboard/new.php");
+    header("Location: /dashboard/");
 }
 exit;
     }

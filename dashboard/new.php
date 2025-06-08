@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../includes/settings.php';
+error_reporting(1);
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['message'] = "You have to login to access this feature.";
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
@@ -13,6 +14,21 @@ if (isset($_COOKIE['user_id'])) {
   $_SESSION['user_id'] = $_COOKIE['user_id'];
   $_SESSION['email'] = $_COOKIE['email'];
 }
+$user_id = $_SESSION['user_id'];
+if ($user_id) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        
+    }
+
+    $stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +39,7 @@ if (isset($_COOKIE['user_id'])) {
   <script src="/tailwind.js"></script>
   <link rel="stylesheet" href="./includes/font-awesome/css/all.css" />
   <link rel="stylesheet" href="./includes/css/animation.css" />
-                  <script src="/includes/ts/theme.ts"></script>
+                  <script src="/includes/js/theme.js"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
   </script>
@@ -183,184 +199,74 @@ if (isset($_COOKIE['user_id'])) {
       </div>
     </div>
   </div>
-<!-- Projects Section -->
-<div id="projects-section">
-  <div class="flex justify-between items-center mb-4">
-    <h3 class="text-xl font-semibold flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-      </svg>
-      Projects
-    </h3>
-    <button type="button" id="add-project" class="flex items-center text-sm bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-      </svg>
-      Add Project
-    </button>
-  </div>
-
-  <div id="projects-container" class="space-y-6">
-    <!-- Projects will be added here dynamically -->
-    <div class="project-item border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-white dark:bg-gray-800 shadow-sm" data-index="0">
-      <div class="flex justify-between items-center mb-4">
-        <h4 class="font-medium text-lg">Project #1</h4>
-        <button type="button" class="remove-project text-red-500 hover:text-red-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-          </svg>
-        </button>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block font-medium mb-2">Project Name <span class="text-red-500">*</span></label>
-          <input type="text" name="projects[0][name]"  
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-        
-        <div>
-          <label class="block font-medium mb-2">Project URL</label>
-          <input type="url" name="projects[0][url]"
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-        
-        <div class="md:col-span-2">
-          <label class="block font-medium mb-2">Description <span class="text-red-500">*</span></label>
-          <textarea name="projects[0][description]" rows="3"  
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
-        </div>
-        
-        <div>
-          <label class="block font-medium mb-2">Image URL</label>
-          <input type="url" name="projects[0][image]"
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-        
-        <div>
-          <label class="block font-medium mb-2">GitHub Repository</label>
-          <input type="url" name="projects[0][github]"
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-      </div>
-    </div>
+  <div id="projects-container">
+  <div class="project-block border border-gray-300 p-4 rounded-lg bg-white dark:bg-gray-800 mt-4">
+    <input type="text" class="project-title w-full mb-2 p-2 border rounded" placeholder="Project Title" />
+    <textarea class="project-description w-full mb-2 p-2 border rounded" placeholder="Description"></textarea>
+    <input type="text" class="project-role w-full mb-2 p-2 border rounded" placeholder="Your Role" />
+    <input type="text" class="project-stack w-full mb-2 p-2 border rounded" placeholder="Tech Stack (e.g., React, Node.js)" />
+    <input type="text" class="project-duration w-full mb-2 p-2 border rounded" placeholder="Duration (e.g., 2 months)" />
+    <input type="text" class="project-year w-full mb-2 p-2 border rounded" placeholder="Year" />
+    <input type="url" class="project-link w-full p-2 border rounded" placeholder="Link (GitHub, Live site, etc.)" />
   </div>
 </div>
 
+<!-- Hidden field to collect all project data -->
+<input type="hidden" name="projects" id="projects-hidden" />
+<button type="button" id="add-project" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Add Another Project</button>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
   const projectsContainer = document.getElementById('projects-container');
-  let projectCount = 1; // Start from 1 since we have one by default
+  const projectsHiddenInput = document.getElementById('projects-hidden');
+  const addProjectBtn = document.getElementById('add-project');
 
-  // Add project
-  document.getElementById('add-project').addEventListener('click', function() {
-    const newIndex = projectCount++;
-    const newProject = document.createElement('div');
-    newProject.className = 'project-item border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-white dark:bg-gray-800 shadow-sm';
-    newProject.dataset.index = newIndex;
-    
-    newProject.innerHTML = `
-      <div class="flex justify-between items-center mb-4">
-        <h4 class="font-medium text-lg">Project #${newIndex + 1}</h4>
-        <button type="button" class="remove-project text-red-500 hover:text-red-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-          </svg>
-        </button>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block font-medium mb-2">Project Name <span class="text-red-500">*</span></label>
-          <input type="text" name="projects[${newIndex}][name]"  
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-        
-        <div>
-          <label class="block font-medium mb-2">Project URL</label>
-          <input type="url" name="projects[${newIndex}][url]"
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-        
-        <div class="md:col-span-2">
-          <label class="block font-medium mb-2">Description <span class="text-red-500">*</span></label>
-          <textarea name="projects[${newIndex}][description]" rows="3"  
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
-        </div>
-        
-        <div>
-          <label class="block font-medium mb-2">Image URL</label>
-          <input type="url" name="projects[${newIndex}][image]"
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-        
-        <div>
-          <label class="block font-medium mb-2">GitHub Repository</label>
-          <input type="url" name="projects[${newIndex}][github]"
-            class="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-        </div>
-      </div>
-    `;
-    
-    projectsContainer.appendChild(newProject);
-  });
+  function updateProjectsData() {
+    const blocks = projectsContainer.querySelectorAll('.project-block');
+    let formattedData = [];
 
-  // Remove project (delegate to container)
-  projectsContainer.addEventListener('click', function(e) {
-    if (e.target.closest('.remove-project')) {
-      const projectItem = e.target.closest('.project-item');
-      if (document.querySelectorAll('.project-item').length > 1) {
-        projectItem.remove();
-        reindexProjects();
-      } else {
-        alert('You must have at least one project');
+    blocks.forEach((block, index) => {
+      const title = block.querySelector('.project-title')?.value.trim();
+      const role = block.querySelector('.project-role')?.value.trim();
+      const year = block.querySelector('.project-year')?.value.trim();
+      const desc = block.querySelector('.project-description')?.value.trim();
+      const stack = block.querySelector('.project-stack')?.value.trim();
+      const link = block.querySelector('.project-link')?.value.trim();
+      const duration = block.querySelector('.project-duration')?.value.trim();
+
+      if (title || role || year || desc || stack || link || duration) {
+        let entry = [`#${index + 1}`];
+        if (title) entry.push(`Title: ${title}`);
+        if (desc) entry.push(`Description: ${desc}`);
+        if (role) entry.push(`Role: ${role}`);
+        if (stack) entry.push(`Tech Stack: ${stack}`);
+        if (duration) entry.push(`Duration: ${duration}`);
+        if (year) entry.push(`Year: ${year}`);
+        if (link) entry.push(`Link: ${link}`);
+        formattedData.push(entry.join('\n'));
       }
-    }
+    });
+
+    projectsHiddenInput.value = formattedData.join('\n\n');
+  }
+
+  // Live update on any change
+  projectsContainer.addEventListener('input', updateProjectsData);
+
+  // Add new project block
+  addProjectBtn.addEventListener('click', () => {
+    const block = document.createElement('div');
+    block.className = 'project-block border border-gray-300 p-4 rounded-lg bg-white dark:bg-gray-800 mt-4';
+    block.innerHTML = `
+      <input type="text" class="project-title w-full mb-2 p-2 border rounded" placeholder="Project Title" />
+      <textarea class="project-description w-full mb-2 p-2 border rounded" placeholder="Description"></textarea>
+      <input type="text" class="project-role w-full mb-2 p-2 border rounded" placeholder="Your Role" />
+      <input type="text" class="project-stack w-full mb-2 p-2 border rounded" placeholder="Tech Stack (e.g., React, Node.js)" />
+      <input type="text" class="project-duration w-full mb-2 p-2 border rounded" placeholder="Duration (e.g., 3 months)" />
+      <input type="text" class="project-year w-full mb-2 p-2 border rounded" placeholder="Year" />
+      <input type="url" class="project-link w-full p-2 border rounded" placeholder="Link (GitHub, Live site, etc.)" />
+    `;
+    projectsContainer.appendChild(block);
   });
-
-  // Reindex projects after deletion
-  function reindexProjects() {
-    const projects = document.querySelectorAll('.project-item');
-    projects.forEach((project, index) => {
-      project.dataset.index = index;
-      project.querySelector('h4').textContent = `Project #${index + 1}`;
-      
-      // Update all input names
-      const inputs = project.querySelectorAll('input, textarea');
-      inputs.forEach(input => {
-        const name = input.name.replace(/projects\[\d+\]/, `projects[${index}]`);
-        input.name = name;
-      });
-    });
-    projectCount = projects.length;
-  }
-});
-
-// Form submission handling
-document.getElementById('yourFormId').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const formData = new FormData(this);
-  
-  try {
-    const response = await fetch('your-php-endpoint.php', {
-      method: 'POST',
-      body: formData
-    });
-    
-    const data = await response.json();
-    
-    if (data.status === 'success') {
-      alert('Projects saved successfully!');
-      // Handle success (e.g., redirect or show message)
-    } else {
-      alert('Error: ' + (data.message || 'Failed to save projects'));
-    }
-  } catch (error) {
-    alert('Network error: ' + error.message);
-  }
-});
 </script>
-
   <!-- Submit Button -->
   <div class="text-right pt-6">
     <button type="submit" 

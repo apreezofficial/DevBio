@@ -29,7 +29,7 @@ if (!isset($_SESSION['user_id'])) {
     <script src="/tailwind.js"></script>
       <link rel="stylesheet" href="./includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="./includes/css/animation.css">
-                <script src="/includes/ts/theme.ts"></script>
+                <script src="/includes/js/theme.js"></script>
   <script>
   tailwind.config = { darkMode: 'class' }
 </script>

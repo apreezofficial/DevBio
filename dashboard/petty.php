@@ -1,24 +1,21 @@
 <?php
 declare(strict_types=1);
-error_reporting(0); // Disable error display (log errors in production)
+error_reporting(0);
 session_start();
 
 header('Content-Type: application/json');
 
-// ========== MAIN REQUEST HANDLER ========== //
+// MAIN HANDLER
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception("Only POST requests allowed!", 405);
     }
 
-    // Get input data (supports both JSON and form-data)
     $input = getRequestData();
 
     if (isset($input['ajax'])) {
-        // Handle CODE GENERATION request
         $response = handleCodeGeneration($input);
     } else {
-        // Handle PROJECTS DATA request
         $response = handleProjectsData($input);
     }
 
@@ -32,11 +29,8 @@ try {
     exit;
 }
 
-// ========== HELPER FUNCTIONS ========== //
+// ========== HELPERS ==========
 
-/**
- * Get and sanitize request data (JSON or form-data)
- */
 function getRequestData(): array {
     $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
 
@@ -48,51 +42,43 @@ function getRequestData(): array {
         }
         return $data;
     }
+
     return $_POST;
 }
 
-/**
- * Handle CODE GENERATION request
- */
 function handleCodeGeneration(array $data): array {
-    // Sanitize ALL inputs
     $input = [
-        'dev_name'            => sanitizeString($data['dev_name'] ?? ''),
-        'dev_email'           => sanitizeEmail($data['dev_email'] ?? ''),
-        'tech_role'           => sanitizeString($data['tech_role'] ?? ''),
-        'frontend_tech'       => sanitizeString($data['frontend_tech'] ?? ''),
-        'styling'             => sanitizeString($data['styling'] ?? ''),
+        'dev_name'              => sanitizeString($data['dev_name'] ?? ''),
+        'dev_email'             => sanitizeEmail($data['dev_email'] ?? ''),
+        'tech_role'             => sanitizeString($data['tech_role'] ?? ''),
+        'frontend_tech'         => sanitizeString($data['frontend_tech'] ?? ''),
+        'styling'               => sanitizeString($data['styling'] ?? ''),
         'additional_components' => sanitizeComponents($data['additional_components'] ?? []),
-        'project_name'        => sanitizeString($data['project_name'] ?? ''),
-        'github'              => sanitizeString($data['github'] ?? ''),
-        'live_url'            => sanitizeUrl($data['live_url'] ?? ''),
-        'description'         => sanitizeString($data['description'] ?? ''),
-        'avatar_url'          => sanitizeUrl($data['avatar_url'] ?? ''),
-        'project_image'       => sanitizeUrl($data['project_image'] ?? ''),
-        'additional_images'   => sanitizeString($data['additional_images'] ?? '')
+        'project_name'          => sanitizeString($data['project_name'] ?? ''),
+        'github'                => sanitizeString($data['github'] ?? ''),
+        'live_url'              => sanitizeUrl($data['live_url'] ?? ''),
+        'description'           => sanitizeString($data['description'] ?? ''),
+        'avatar_url'            => sanitizeUrl($data['avatar_url'] ?? ''),
+        'project_image'         => sanitizeUrl($data['project_image'] ?? ''),
+        'additional_images'     => sanitizeString($data['additional_images'] ?? ''),
+                'projects'     => sanitizeString($data['projects'] ?? 'No project Yet')
     ];
 
-    // Validate required fields
     validateRequiredFields($input);
 
-    // Generate AI prompt & call API
     $prompt = buildPrompt($input);
     $apiResponse = callAIApi($prompt);
     $files = parseApiResponse($apiResponse);
 
-    // Store in session
     $_SESSION['generated_files'] = $files;
 
     return [
-        'status'  => 'success',
+        'status' => 'success',
         'message' => 'Project files generated!',
-        'files'   => $files
+        'files' => $files
     ];
 }
 
-/**
- * Handle PROJECTS DATA request
- */
 function handleProjectsData(array $data): array {
     if (!isset($data['projects']) || !is_array($data['projects'])) {
         throw new Exception("No projects data received!", 400);
@@ -104,11 +90,10 @@ function handleProjectsData(array $data): array {
             'name'        => sanitizeString($project['name'] ?? ''),
             'url'         => sanitizeUrl($project['url'] ?? ''),
             'description' => sanitizeString($project['description'] ?? ''),
-            'image'      => sanitizeUrl($project['image'] ?? ''),
-            'github'     => sanitizeUrl($project['github'] ?? '')
+            'image'       => sanitizeUrl($project['image'] ?? ''),
+            'github'      => sanitizeUrl($project['github'] ?? '')
         ];
 
-        // Validate required fields
         if (empty($sanitized['name'])) {
             throw new Exception("Project name is required for project #" . ($index + 1), 400);
         }
@@ -116,48 +101,39 @@ function handleProjectsData(array $data): array {
         $projects[] = $sanitized;
     }
 
-    // Store in session
     $_SESSION['projects'] = $projects;
 
     return [
-        'status'  => 'success',
+        'status' => 'success',
         'message' => 'Projects saved successfully!',
         'projects' => $projects
     ];
 }
 
-// ========== SANITIZATION & VALIDATION ========== //
+// ========== SANITIZATION ==========
 
 function sanitizeString(string $value): string {
     return htmlspecialchars(stripslashes(trim($value)), ENT_QUOTES, 'UTF-8');
 }
 
 function sanitizeUrl(string $value): string {
-    $clean = filter_var(trim($value), FILTER_SANITIZE_URL);
-    return $clean ?: '';
+    return filter_var(trim($value), FILTER_SANITIZE_URL) ?: '';
 }
 
 function sanitizeEmail(string $value): string {
-    $clean = filter_var(trim($value), FILTER_SANITIZE_EMAIL);
-    return $clean ?: '';
+    return filter_var(trim($value), FILTER_SANITIZE_EMAIL) ?: '';
 }
 
-/**
- * Sanitize components (handles both arrays and strings)
- */
 function sanitizeComponents($components): array {
     if (is_string($components)) {
         return array_filter(
             array_map('trim', explode(',', $components)),
-            function($item) { return !empty($item); }
+            fn($item) => !empty($item)
         );
     }
     return is_array($components) ? array_filter($components, 'is_string') : [];
 }
 
-/**
- * Validate required fields for code generation
- */
 function validateRequiredFields(array $input): void {
     $required = [
         'dev_name'      => 'Developer name is required!',
@@ -178,83 +154,54 @@ function validateRequiredFields(array $input): void {
     }
 }
 
-// ========== AI PROMPT & API CALL ========== //
+// ========== PROMPT GENERATION ==========
 
 function buildPrompt(array $input): string {
-    $components = !empty($input['additional_components']) ? 
-        implode(", ", $input['additional_components']) : 'None';
+    extract($input); // imports all keys as variables
+
+    $components = !empty($additional_components) ? implode(', ', $additional_components) : 'None';
 
     $projectsSection = '';
     if (!empty($_SESSION['projects'])) {
         $projectsSection = "\n\nPROJECTS SHOWCASE:\n";
         foreach ($_SESSION['projects'] as $project) {
             $projectsSection .= "- {$project['name']}: {$project['description']}";
-            if ($project['url']) $projectsSection .= " | Live: {$project['url']}";
+            if ($project['url'])    $projectsSection .= " | Live: {$project['url']}";
             if ($project['github']) $projectsSection .= " | GitHub: {$project['github']}";
-            if ($project['image']) $projectsSection .= " | Image: {$project['image']}";
+            if ($project['image'])  $projectsSection .= " | Image: {$project['image']}";
             $projectsSection .= "\n";
         }
     }
 
     return <<<EOD
-You are a top-tier developer assistant. Generate a complete, error-free, and highly professional project for a personal portfolio based on the input below.
+You are a top-tier developer assistant. Generate a complete, error-free, and professional portfolio project based on this:
 
-CRITICAL REQUIREMENTS:
-- Every file must be properly named and formatted. Missing or incorrect file names are not allowed.
-- Use Font Awesome icons by default unless the user specifically says otherwise.
-- Make the portfolio super clean, visually appealing, modern, fast, and job-ready.
-- Code must follow best practices, correct structure, and clean naming conventions.
-- Final result should look like it was built by a senior developer aiming to impress a top-tier company.
+Developer Name: $dev_name  
+Email: $dev_email  
+Role/Title: $tech_role  
+Frontend Tech: $frontend_tech  
+Styling: $styling  
+Additional Components: $components  
+Avatar URL: $avatar_url
 
-Developer Details:
+Previous Projects details of the Developer( $dev_name ):
+$projects
 
-The Developer Name: $dev_name  
-The developer Email: $dev_email  
-His/Her Role/Title in tech(detect gender from developer name): $tech_role  
-Programming Language/Framework to be used to build the app: $frontend_tech  
-Styling Method: $styling  
-Additional Libraries needed: $components
-User Avatar URL: $avatar_url  
+Format each file like:
+<name>filename<name>
+...file content...
+<name>filename<name>
+on no condition mist your file formatting be differnt from tgat wbich i have given you, let me say ut again,
+<name>filename<name>
+...file content...
+<name>filename<name>
 
-User past Projects Info:
-- Project Name: $project_name  
-- GitHub Username: $github  
-- Live Project URL: $live_url  
-- Project Description: $description  
-- Main Project Image: $project_image  
-- Additional Images: $additional_images
-
-YOUR TASK:
-
-1. Start with a full Project File Tree — show the folder structure clearly.
-
-2. For every file, output it using this exact format:  
-   <name>filename<name>  
-   ...file contents here...  
-   <name>filename<name>  
-   Make sure the file name is correct and complete. No mistakes or placeholders.
-
-3. Include only files relevant to the selected framework/language, such as:
-   - Entry point (e.g., index.html, App.js, App.vue)
-   - CSS or styling setup (e.g., style.css, tailwind.config.js)
-   - JS/Component scripts (e.g., main.js, Header.jsx)
-   - .gitignore, LICENSE, and README.md
-   - Config files (e.g., vite.config.js, webpack.config.js)
-   - Any assets/ used (e.g., image files, favicon)
-   - public/ content like robots.txt if referenced
-
-4. Every code block must be:
-   - Fully valid and working
-   - Free from errors
-   - Neatly formatted and styled
-   - Styled and structured with the mad clean, modern, and responsive design expected of a production-ready portfolio.
-
-5. Do NOT include any explanation, commentary, or notes outside the <name>filename<name> tags.
-
-GOAL:
-Deliver a blazingly fast, production-grade, and beautifully coded portfolio with correct file names, full structure, modern UI, and Font Awesome icons (unless told otherwise).
+CURLOPT_SSL_VERIFYPEER
+Use Font Awesome icons unless told otherwise. Code must be production-ready, fast, modern, and properly structured.
 EOD;
 }
+
+// ========== API CALL & PARSE ==========
 
 function callAIApi(string $prompt): string {
     $apiUrl = "https://text.pollinations.ai/" . rawurlencode($prompt);
@@ -264,7 +211,7 @@ function callAIApi(string $prompt): string {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_SSL_VERIFYHOST => 0,
         CURLOPT_SSL_VERIFYPEER => 0,
-        CURLOPT_TIMEOUT => 30000
+        CURLOPT_TIMEOUT => 200
     ]);
 
     $response = curl_exec($ch);

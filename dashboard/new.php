@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../includes/settings.php';
-error_reporting(1);
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['message'] = "You have to login to access this feature.";
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
@@ -113,7 +112,7 @@ if ($user_id) {
           Developer Name <span class="text-red-500">*</span>
         </label>
         <input id="dev_name" name="dev_name" type="text"  
-          class="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+          class="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent" value="<?php echo htmlspecialchars($user['name']) ?>"/>
       </div>
 
       <div>
@@ -121,7 +120,7 @@ if ($user_id) {
           Contact Email <span class="text-red-500">*</span>
         </label>
         <input id="dev_email" name="dev_email" type="email"  
-          class="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+          class="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent" value="<?php echo htmlspecialchars($user['email']) ?>" />
       </div>
 
       <div>
@@ -138,15 +137,32 @@ if ($user_id) {
         </select>
       </div>
 
-      <div>
-        <label for="avatar_url" class="block font-medium mb-2">Avatar URL</label>
-        <div class="flex items-center space-x-3">
-          <input id="avatar_url" name="avatar_url" type="url" 
-            value="https://www.gravatar.com/avatar/default?s=200" 
-            class="flex-1 p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
-          <img id="avatar-preview" src="https://www.gravatar.com/avatar/default?s=200" class="w-12 h-12 rounded-full border-2 border-gray-300 dark:border-gray-600" alt="Avatar Preview">
-        </div>
-      </div>
+<div>
+  <label for="avatar_url" class="block font-medium mb-2">Avatar URL</label>
+  <div class="flex items-center space-x-3">
+    <input id="avatar_url" name="avatar_url" type="url"
+      class="flex-1 p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+      value="<?php echo isset($user['avatar']) ? htmlspecialchars($user['avatar']) : '' ?>" />
+    <img id="avatar-preview"
+         src="<?php echo isset($user['avatar']) && !empty($user['avatar']) ? htmlspecialchars($user['avatar']) : 'default-avatar.png' ?>"
+         class="w-12 h-12 rounded-full border-2 border-gray-300 dark:border-gray-600"
+         alt="Avatar Preview" />
+  </div>
+</div>
+
+<script>
+  const avatarInput = document.getElementById('avatar_url');
+  const avatarPreview = document.getElementById('avatar-preview');
+
+  avatarInput.addEventListener('input', () => {
+    const url = avatarInput.value.trim();
+    if(url) {
+      avatarPreview.src = url;
+    } else {
+      avatarPreview.src = ''; // fallback image
+    }
+  });
+</script>
     </div>
   </div>
 
@@ -199,18 +215,62 @@ if ($user_id) {
       </div>
     </div>
   </div>
-  <div id="projects-container">
-  <div class="project-block border border-gray-300 p-4 rounded-lg bg-white dark:bg-gray-800 mt-4">
-    <input type="text" class="project-title w-full mb-2 p-2 border rounded" placeholder="Project Title" />
-    <textarea class="project-description w-full mb-2 p-2 border rounded" placeholder="Description"></textarea>
-    <input type="text" class="project-role w-full mb-2 p-2 border rounded" placeholder="Your Role" />
-    <input type="text" class="project-stack w-full mb-2 p-2 border rounded" placeholder="Tech Stack (e.g., React, Node.js)" />
-    <input type="text" class="project-duration w-full mb-2 p-2 border rounded" placeholder="Duration (e.g., 2 months)" />
-    <input type="text" class="project-year w-full mb-2 p-2 border rounded" placeholder="Year" />
-    <input type="url" class="project-link w-full p-2 border rounded" placeholder="Link (GitHub, Live site, etc.)" />
+<div id="projects-container">
+  <div
+    class="project-block border border-purple-500 bg-white dark:bg-[#0D0D0D] dark:border-[#8A2BE2] p-5 rounded-lg mt-4 shadow-md
+           transition-colors duration-300"
+  >
+    <input
+      type="text"
+      class="project-title w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+      placeholder="Project Title"
+    />
+    <textarea
+      class="project-description w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none transition"
+      placeholder="Description"
+      rows="3"
+    ></textarea>
+    <input
+      type="text"
+      class="project-role w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+      placeholder="Your Role"
+    />
+    <input
+      type="text"
+      class="project-stack w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+      placeholder="Tech Stack (e.g., React, Node.js)"
+    />
+    <input
+      type="text"
+      class="project-duration w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+      placeholder="Duration (e.g., 2 months)"
+    />
+    <input
+      type="text"
+      class="project-year w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+      placeholder="Year"
+    />
+    <input
+      type="url"
+      class="project-link w-full p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+             text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+      placeholder="Link (GitHub, Live site, etc.)"
+    />
   </div>
 </div>
-
 <!-- Hidden field to collect all project data -->
 <input type="hidden" name="projects" id="projects-hidden" />
 <button type="button" id="add-project" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Add Another Project</button>
@@ -254,16 +314,44 @@ if ($user_id) {
   // Add new project block
   addProjectBtn.addEventListener('click', () => {
     const block = document.createElement('div');
-    block.className = 'project-block border border-gray-300 p-4 rounded-lg bg-white dark:bg-gray-800 mt-4';
-    block.innerHTML = `
-      <input type="text" class="project-title w-full mb-2 p-2 border rounded" placeholder="Project Title" />
-      <textarea class="project-description w-full mb-2 p-2 border rounded" placeholder="Description"></textarea>
-      <input type="text" class="project-role w-full mb-2 p-2 border rounded" placeholder="Your Role" />
-      <input type="text" class="project-stack w-full mb-2 p-2 border rounded" placeholder="Tech Stack (e.g., React, Node.js)" />
-      <input type="text" class="project-duration w-full mb-2 p-2 border rounded" placeholder="Duration (e.g., 3 months)" />
-      <input type="text" class="project-year w-full mb-2 p-2 border rounded" placeholder="Year" />
-      <input type="url" class="project-link w-full p-2 border rounded" placeholder="Link (GitHub, Live site, etc.)" />
-    `;
+block.className = 'project-block border border-purple-500 bg-white dark:bg-[#0D0D0D] dark:border-[#8A2BE2] p-5 rounded-lg mt-4 shadow-md transition-colors duration-300';
+
+block.innerHTML = `
+  <input type="text" class="project-title w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+         placeholder="Project Title" />
+  
+  <textarea class="project-description w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none transition"
+         placeholder="Description" rows="3"></textarea>
+  
+  <input type="text" class="project-role w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+         placeholder="Your Role" />
+  
+  <input type="text" class="project-stack w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+         placeholder="Tech Stack (e.g., React, Node.js)" />
+  
+  <input type="text" class="project-duration w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+         placeholder="Duration (e.g., 3 months)" />
+  
+  <input type="text" class="project-year w-full mb-3 p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+         placeholder="Year" />
+  
+  <input type="url" class="project-link w-full p-3 border border-blue-300 rounded-lg bg-blue-50 dark:bg-[#1E1E3F] dark:border-blue-700
+         text-gray-900 dark:text-gray-200 placeholder:text-blue-400 dark:placeholder:text-purple-400
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+         placeholder="Link (GitHub, Live site, etc.)" />
+`;
     projectsContainer.appendChild(block);
   });
 </script>

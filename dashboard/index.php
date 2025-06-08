@@ -48,12 +48,12 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <a href="new.php" class="bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
-        <h2 class="font-semibold text-lg mb-2">🎯 Create New Project</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Add a new project to your portfolio.</p>
+        <h2 class="font-semibold text-lg mb-2">🎯 Create New Portfolio</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Add a new Portfolio to your List.</p>
       </a>
       
-      <a href="edit-bio.php" class="bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
-        <h2 class="font-semibold text-lg mb-2">📝 Edit Bio</h2>
+      <a href="resume.php" class="bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+        <h2 class="font-semibold text-lg mb-2">📝 Create Resume</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">Update your developer bio and skills.</p>
       </a>
       

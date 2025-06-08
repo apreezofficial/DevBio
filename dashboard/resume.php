@@ -192,7 +192,7 @@
       field.classList.remove('border-gray-300');
       valid = false;
 
-      // Remove the shake class after 0.5s
+
       setTimeout(() => {
         field.classList.remove('shake');
       }, 500);

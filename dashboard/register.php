@@ -153,7 +153,9 @@ if (isset($_POST['verify_code'])) {
             $stmt->execute([$email]);
             unset($_SESSION['pending_email']);
             unset($_SESSION['code_sent_time']);
-            $success = "Account verified! You may now login.";
+$_SESSION['success_msg'] = "Account verified! You may now login.";
+header("Location: login.php");
+exit();
         } else {
             $errors[] = "Invalid code.";
             $showVerification = true;
@@ -196,6 +198,7 @@ error_reporting(1);
   <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
         <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="../includes/css/body.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script>
   tailwind.config = { darkMode: 'class' }
 </script>
@@ -208,9 +211,25 @@ error_reporting(1);
       <?= htmlspecialchars($success) ?>
     </div>
   <?php endif; ?>
-  <?php foreach ($errors as $error): ?>
-    <div class="bg-red-500 text-white px-4 py-2 mb-2 rounded"><?= htmlspecialchars($error) ?></div>
-  <?php endforeach; ?>
+<?php if (!empty($errors)): ?>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    <?php foreach ($errors as $error): ?>
+      Swal.fire({
+        toast: true,
+        position: 'top',
+        icon: 'error',
+        title: <?= json_encode(htmlspecialchars($error)) ?>,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        customClass: {
+          popup: 'bg-red-500 text-white dark:bg-red-700 dark:text-gray-200 p-2 mb-2 rounded shadow-lg'
+        }
+      });
+    <?php endforeach; ?>
+  </script>
+<?php endif; ?>
   <?php if ($showVerification && isset($_SESSION['pending_email'])): ?>
     <!-- Verification Code Form -->
     <div class="max-w-md mx-auto mt-16 p-8 rounded-3xl glass-effect shadow-xl transition-colors duration-500">

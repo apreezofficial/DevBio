@@ -153,9 +153,7 @@ if (isset($_POST['verify_code'])) {
             $stmt->execute([$email]);
             unset($_SESSION['pending_email']);
             unset($_SESSION['code_sent_time']);
-$_SESSION['success_msg'] = "Account verified! You may now login.";
-header("Location: login.php");
-exit();
+$success = "Account verified! You may now login.";
         } else {
             $errors[] = "Invalid code.";
             $showVerification = true;
@@ -207,9 +205,24 @@ error_reporting(1);
 
 <div class="w-full max-w-md p-6 rounded-xl bg-white dark:bg-[#111] shadow-lg">
   <?php if (!empty($success)) : ?>
-    <div class="bg-green-600 text-white px-4 py-2 mb-4 rounded text-center font-semibold">
-      <?= htmlspecialchars($success) ?>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        toast: true,
+        position: 'top',
+        icon: 'success',
+        title: <?= json_encode($success) ?>,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        customClass: {
+            popup: 'bg-green-500 text-white dark:bg-green-700 dark:text-gray-200 p-2 mb-2 rounded shadow-lg'
+        },
+        didClose: () => {
+            window.location.href = 'login.php';
+        }
+    });
+</script>
   <?php endif; ?>
 <?php if (!empty($errors)): ?>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

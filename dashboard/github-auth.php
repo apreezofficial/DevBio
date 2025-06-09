@@ -3,7 +3,7 @@ session_start();
 require '../includes/settings.php';
 $client_id = $row['github_client_id'];
     $client_secret = $row['github_secret_key'];
-$redirect_uri = 'http://0.0.0.0:3360/dashboard/github-auth.php';
+$redirect_uri = 'http://devbio.preciousadedokun.com.ng/dashboard/github-auth.php';
 if (isset($_GET['code'])) {
     try {
         $code = $_GET['code'];
@@ -162,10 +162,10 @@ if (isset($_GET['code'])) {
 
         if (!empty($_SESSION['redirect_url'])) {
     $url = $_SESSION['redirect_url'];
-    unset($_SESSION['redirect_url']); // Optional: clear after use
+    unset($_SESSION['redirect_url']);
     header("Location: $url");
 } else {
-    header("Location: /dashboard/new.php");
+    header("Location: /dashboard.php");
 }
         exit;
 

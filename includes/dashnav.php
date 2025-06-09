@@ -14,6 +14,7 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 }
 ?>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <nav class="bg-white dark:bg-[#0D0D0D] border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between shadow-sm">
   <!-- Left: Logo -->
   <a href="./" class="flex items-center space-x-2">

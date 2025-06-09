@@ -6,7 +6,7 @@ $email = isset($_GET['email']) ? urldecode($_GET['email']) : '';
 $error = '';
 
 if (empty($email)) {
-    header("Location: forgot_password.php");
+    header("Location: forgot.php");
     exit();
 }
 
@@ -80,12 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <div class="text-center text-sm text-gray-500 dark:text-gray-400">
-                <p>Didn't receive a code? <a href="forgot_password.php?email=<?php echo urlencode($email); ?>" class="text-indigo-600 dark:text-indigo-400 hover:underline">Resend code</a></p>
+                <p>Didn't receive a code? <a href="forgot.php?email=<?php echo urlencode($email); ?>" class="text-indigo-600 dark:text-indigo-400 hover:underline">Resend code</a></p>
                 <p class="mt-2">Code expires in 10 minutes</p>
             </div>
             
             <div class="text-center">
-                <a href="forgot_password.php" class="text-indigo-600 dark:text-indigo-400 hover:underline">Use a different email</a>
+                <a href="forgot.php" class="text-indigo-600 dark:text-indigo-400 hover:underline">Use a different email</a>
             </div>
         </form>
     </div>

@@ -1,8 +1,6 @@
 <?php
 session_start();
 require '../includes/conn.php';
-
-// Redirect if not coming from a verified reset request
 if (!isset($_SESSION['reset_user_id'])) {
     header("Location: forgot_password.php");
     exit();
@@ -48,9 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
+        <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
+            <link rel="stylesheet" href="../includes/css/body.css">
 </head>
+  <script>
+  tailwind.config = { darkMode: 'class' }
+</script>
 <body class="h-full flex items-center justify-center p-4">
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         placeholder="New Password"  
                         minlength="6"  
                         class="w-full pl-14 pr-14 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#222] text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-indigo-400 transition"  
-                        required
+                   
                     />  
                     <i class="fas fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-indigo-400 dark:text-indigo-500 pointer-events-none"></i>  
                     <button  

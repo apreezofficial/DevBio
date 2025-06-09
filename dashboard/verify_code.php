@@ -31,13 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white dark:bg-[#111]">
+<html lang="en" class="h-full bg-white">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Code</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
+        <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
+            <link rel="stylesheet" href="../includes/css/body.css">
+     <script>
+  tailwind.config = { darkMode: 'class' }
+</script>
     <style>
         .code-input {
             -moz-appearance: textfield;
@@ -49,19 +53,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body class="h-full flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
+<body class="h-full flex items-center justify-center p-4 bg-gray-50 dark:bg-[#0d0d0d]">
+    <div class="w-full max-w-md bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-xl dark:shadow-gray-900/30 p-8 border border-gray-100 dark:border-gray-800/50">
+        <!-- Verification Header -->
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">Verify Your Email</h1>
-            <p class="text-gray-500 dark:text-gray-400">Enter the 6-digit code sent to <?php echo htmlspecialchars($email); ?></p>
+            <div class="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-indigo-100 dark:border-indigo-800/30">
+                <i class="fas fa-shield-check text-2xl text-indigo-500 dark:text-indigo-400"></i>
+            </div>
+            
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Verify Your Identity</h1>
+            <p class="text-gray-500 dark:text-gray-400 mb-4">We sent a 6-digit code to <span class="font-medium text-indigo-600 dark:text-indigo-400"><?php echo htmlspecialchars($email); ?></span></p>
+            
+            <div class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-50/80 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/30 backdrop-blur-sm">
+                <i class="fas fa-envelope-open-text mr-2 text-indigo-500 dark:text-indigo-300"></i>
+                <span class="text-sm text-indigo-600 dark:text-indigo-300">Check your email for the verification link</span>
+            </div>
         </div>
         
+        <!-- Error Message -->
         <?php if ($error): ?>
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
+            <div class="mb-6 p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50 text-red-600 dark:text-red-300 rounded-lg flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
                 <?php echo $error; ?>
             </div>
         <?php endif; ?>
         
+        <!-- Verification Form -->
         <form method="post" class="space-y-6" autocomplete="off">
             <div class="flex justify-center space-x-3">
                 <?php for ($i = 0; $i < 6; $i++): ?>
@@ -71,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         maxlength="1"
                         pattern="[0-9]"
                         inputmode="numeric"
-                        class="code-input w-12 h-12 text-center text-2xl font-bold rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#222] text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-4 focus:ring-indigo-400 transition"
+                        class="code-input w-14 h-14 text-center text-3xl font-bold rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#222] text-gray-800 dark:text-gray-100 focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900/50 transition-all duration-150"
                         oninput="moveToNext(this, <?php echo $i; ?>)"
                         onkeydown="moveToPrevious(event, <?php echo $i; ?>)"
                         onpaste="handlePaste(event)"
@@ -79,13 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endfor; ?>
             </div>
             
-            <div class="text-center text-sm text-gray-500 dark:text-gray-400">
-                <p>Didn't receive a code? <a href="forgot.php?email=<?php echo urlencode($email); ?>" class="text-indigo-600 dark:text-indigo-400 hover:underline">Resend code</a></p>
-                <p class="mt-2">Code expires in 10 minutes</p>
-            </div>
-            
-            <div class="text-center">
-                <a href="forgot.php" class="text-indigo-600 dark:text-indigo-400 hover:underline">Use a different email</a>
+            <!-- Action Links -->
+            <div class="space-y-4 text-center">
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                    <p>Didn't receive a code? <a href="forgot.php?email=<?php echo urlencode($email); ?>" class="font-medium text-indigo-600 dark:text-indigo-400 hover:underline">Resend code</a></p>
+                    <p class="mt-1 text-xs opacity-80">Code expires in 10 minutes</p>
+                </div>
+                
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800/50">
+                    <a href="forgot.php" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                        <i class="fas fa-arrow-left mr-1"></i> Use different email
+                    </a>
+                </div>
             </div>
         </form>
     </div>
@@ -96,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const firstInput = document.querySelector('input[name="code[]"]');
             if (firstInput) {
                 firstInput.focus();
+                firstInput.select();
             }
         });
 
@@ -130,6 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             for (let i = 0; i < Math.min(pasteData.length, 6); i++) {
                 inputs[i].value = pasteData[i];
+                inputs[i].classList.add('animate-pulse');
+                setTimeout(() => inputs[i].classList.remove('animate-pulse'), 200);
             }
             
             if (pasteData.length >= 6) {

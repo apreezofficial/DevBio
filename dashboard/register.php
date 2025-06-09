@@ -190,6 +190,7 @@ $timeLeft = max(0, 600 - (time() - $codeSentTime));
   <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
         <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="../includes/css/body.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script>
   tailwind.config = { darkMode: 'class' }
 </script>

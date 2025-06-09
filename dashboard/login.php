@@ -120,7 +120,12 @@ exit;
       Register
     </a>
   </p>
-
+  <p class="text-sm text-gray-600 dark:text-gray-400">
+    Forgotten Password?
+    <a href="forgot.php" class="text-indigo-600 hover:text-purple-600 font-bold transition">
+      Click Here
+    </a>
+  </p>
   <!-- OR Divider -->
   <div class="relative my-4">
     <hr class="border-gray-300 dark:border-gray-700" />

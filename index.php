@@ -13,9 +13,9 @@ require 'includes/settings.php';
   <meta name="google-site-verification" content="mpfvExLjgj2MPsncOhhRIMSpfFm-zw9WJNEGflQNONU" />
 
   <!-- Title & Description -->
-  <title><?php echo $appName;?> | Innovative Full Stack & App Development Solutions</title>
-  <meta name="title" content="<?php echo $appName;?> - Innovative Full Stack & App Development Solutions" />
-  <meta name="description" content="<?php echo $appName;?> is a leading technology company delivering fast, secure, and scalable web and app development solutions. Crafted by expert developer Precious Adedokun." />
+  <title><?php echo $appName;?> | The Lead Portfolio Generator </title>
+  <meta name="title" content="<?php echo $appName;?> - The Lead Portfolio Generator" />
+  <meta name="description" content="<?php echo $appName;?> is a leading portfolio generator delivering fast, secure, and scalable protfolio for techies. Crafted by expert developer Precious Adedokun." />
   <!-- SEO Keywords -->
   <meta name="keywords" content="<?php echo $appName;?>, Full Stack Developer, App Developer, Web Development Company Nigeria, Scalable Web Apps, Secure APIs, UI/UX Design, Software Solutions, Tech Innovation, Precious Adedokun" />
   <meta name="author" content="Precious Adedokun" />
@@ -26,18 +26,18 @@ require 'includes/settings.php';
   <meta property="og:url" content="" />
   <meta property="og:title" content="<?php echo $appName;?> | Innovative Full Stack & App Development Solutions" />
   <meta property="og:description" content="<?php echo $appName;?> builds powerful, secure, and scalable digital solutions. Developed by expert Precious Adedokun, our team delivers excellence in web and app development." />
-  <meta property="og:image" content="/includes/images/logo.png" />
+  <meta property="og:image" content="/assets/logo.png" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="" />
   <meta name="twitter:title" content="<?php echo $appName;?> | Innovative Full Stack & App Development Solutions" />
   <meta name="twitter:description" content="Explore <?php echo $appName;?>'s cutting-edge web and app development solutions, crafted by expert developer Precious Adedokun." />
-  <meta name="twitter:image" content="/includes/images/logo.png" />
+  <meta name="twitter:image" content="/assets/logo.png" />
 
   <!-- Theme & Favicon -->
   <meta name="theme-color" content="#2563eb" />
-  <link rel="icon" type="image/png" href="/includes/images/logo.png" />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -90,7 +90,7 @@ require 'includes/settings.php';
 
     <!-- CTA Buttons -->
     <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fadeInUp delay-300">
-      <a href="/dashboard/generate" class="px-6 py-3 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-lg dark:shadow-indigo-500/30">
+      <a href="/dashboard/new.php" class="px-6 py-3 rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition shadow-lg dark:shadow-indigo-500/30">
         Generate Now
       </a>
       <a href="/docs" class="px-6 py-3 rounded-xl text-indigo-600 bg-indigo-100 hover:bg-indigo-200 transition dark:text-indigo-300 dark:bg-zinc-800 dark:hover:bg-zinc-700">

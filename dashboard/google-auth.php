@@ -1,10 +1,10 @@
 <?php
 session_start();
-
+include '../includes/settings.php';
 // Google OAuth Configuration
 $client_id = $row['google_client_id'];
 $client_secret = $row['google_secret_key'];
-$redirect_uri = 'http://0.0.0.0:3360/dashboard/google-auth.php';
+$redirect_uri = 'https://devbio.preciousadedokun.com.ng/dashboard/google-auth.php';
 // If Google redirects back with authorization code
 if (isset($_GET['code'])) {
     try {
@@ -116,7 +116,7 @@ if (isset($_GET['code'])) {
         
         setcookie('user_id', $user_id, time() + (86400 * 30), "/", "", false, true);
 
-        header("Location: dashboard.php");
+        header("Location: /");
         exit;
 
     } catch (Exception $e) {

@@ -19,7 +19,7 @@ if (isset($_SESSION['user_id'])) {
   <!-- Logo -->
   <a href="./" class="flex items-center space-x-3 group">
     <div class="p-1.5 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 group-hover:rotate-12 transition-transform duration-300">
-      <img src="/assets/logo.svg" alt="Logo" class="w-6 h-6">
+      <img src="/assets/logo.png" alt="Logo" class="w-6 h-6">
     </div>
     <span class="text-xl font-semibold text-gray-800 dark:text-gray-100 tracking-tight"><?php echo $appName; ?></span>
   </a>
@@ -40,12 +40,12 @@ if (isset($_SESSION['user_id'])) {
   <!-- Right Side Controls -->
   <div class="flex items-center space-x-3">
     <!-- Theme Toggle -->
-    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all" aria-label="Toggle theme">
-      <svg id="theme-icon" class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24">
-        <path class="hidden dark:block" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 16a4 4 0 100-8 4 4 0 000 8z"/>
-        <path class="dark:hidden" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4V3m0 18v-1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M5.636 5.636l-.707.707M16.364 5.636l.707.707M5.636 18.364l.707.707"/>
-      </svg>
-    </button>
+      <button id="theme-toggle" class="ml-4 p-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-transform active:scale-95">
+        <svg id="theme-icon" class="w-5 h-5 text-black dark:text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773l-1.591-1.591M12 8.25V5.25" class="block dark:hidden"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" class="hidden dark:block"/>
+        </svg>
+      </button>
 
     <!-- User Menu -->
     <div class="relative">
@@ -65,10 +65,10 @@ if (isset($_SESSION['user_id'])) {
           <p class="text-sm font-medium text-gray-800 dark:text-gray-200"><?= htmlspecialchars($user['name'] ?? 'User') ?></p>
           <p class="text-xs text-gray-500 dark:text-gray-400 truncate"><?= htmlspecialchars($user['email']) ?></p>
         </div>
-        <a href="profile.php" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
           <i class="fas fa-user mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"></i> Profile
         </a>
-        <a href="settings.php" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+        <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
           <i class="fas fa-cog mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"></i> Settings
         </a>
         <a href="logout.php" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-50 dark:hover:bg-gray-700/50">
@@ -91,12 +91,5 @@ if (isset($_SESSION['user_id'])) {
     if (!e.target.closest("#userMenu") && !e.target.closest("button[onclick='toggleUserMenu()']")) {
       menu.classList.add("hidden");
     }
-  });
-
-  // Theme toggle functionality
-  const themeToggle = document.getElementById("theme-toggle");
-  themeToggle.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
   });
 </script>

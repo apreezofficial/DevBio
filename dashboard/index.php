@@ -52,12 +52,12 @@ if (!isset($_SESSION['user_id'])) {
         <p class="text-sm text-gray-500 dark:text-gray-400">Add a new Portfolio to your List.</p>
       </a>
       
-      <a href="resume.php" class="bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+      <a href="resume.php" class="hidden bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
         <h2 class="font-semibold text-lg mb-2">📝 Create Resume</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">Update your developer bio and skills.</p>
       </a>
       
-      <a href="theme-customizer.php" class="bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+      <a href="theme-customizer.php" class=" hidden bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
         <h2 class="font-semibold text-lg mb-2">🎨 Customize Theme</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">Choose colors, fonts, and layout.</p>
       </a>
@@ -67,6 +67,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="mt-10">
       <h2 class="text-xl font-semibold mb-4">📢 Coming Soon</h2>
       <ul class="list-disc ml-5 text-sm text-gray-500 dark:text-gray-400">
+       <li>Advanced Resume Builder</li>
         <li>Connect social accounts (GitHub, X, LinkedIn)</li>
         <li>Live portfolio preview mode</li>
         <li>Analytics dashboard</li>

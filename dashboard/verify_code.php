@@ -66,17 +66,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-50/80 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/30 backdrop-blur-sm">
                 <i class="fas fa-envelope-open-text mr-2 text-indigo-500 dark:text-indigo-300"></i>
-                <span class="text-sm text-indigo-600 dark:text-indigo-300">Check your email for the verification link</span>
+                <span class="text-sm text-indigo-600 dark:text-indigo-300">You can use the link in your verification mail too</span>
             </div>
         </div>
         
-        <!-- Error Message -->
-        <?php if ($error): ?>
-            <div class="mb-6 p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800/50 text-red-600 dark:text-red-300 rounded-lg flex items-center">
-                <i class="fas fa-exclamation-circle mr-2"></i>
-                <?php echo $error; ?>
-            </div>
-        <?php endif; ?>
+<?php if ($error): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'error',
+                title: <?php echo json_encode($error); ?>,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 border border-red-400 dark:border-red-700 rounded-lg p-4'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        });
+    </script>
+<?php endif; ?>
         
         <!-- Verification Form -->
         <form method="post" class="space-y-6" autocomplete="off">
@@ -88,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         maxlength="1"
                         pattern="[0-9]"
                         inputmode="numeric"
-                        class="code-input w-14 h-14 text-center text-3xl font-bold rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#222] text-gray-800 dark:text-gray-100 focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900/50 transition-all duration-150"
+                        class="code-input w-10 md:w-14 h-14 text-center text-3xl font-bold rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#222] text-gray-800 dark:text-gray-100 focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900/50 transition-all duration-150"
                         oninput="moveToNext(this, <?php echo $i; ?>)"
                         onkeydown="moveToPrevious(event, <?php echo $i; ?>)"
                         onpaste="handlePaste(event)"

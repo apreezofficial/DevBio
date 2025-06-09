@@ -10,7 +10,7 @@ use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-
+error_reporting(1);
 function sendVerificationEmail($email, $code, $token) {
     $mail = new PHPMailer(true);
 
@@ -97,7 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
 
         if ($user && $user['verified']) {
             $errors[] = "This email is already registered and verified. Please login.";
-        } else {
+        } 
+        elseif ($user && $user['github_id']) {
+            $errors[] = "This email is already registered another Oauth Provider(Github)";}
+            elseif ($user && $user['google_id']) {
+            $errors[] = "This email is already registered another Oauth Provider(Google)";}
+            else {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
             $code = random_int(100000, 999999);
             $token = bin2hex(random_bytes(16));
@@ -105,11 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
 
             if ($user) {
                 // Update unverified
-                $stmt = $pdo->prepare("UPDATE users SET password=?, verification_code=?, code_expires=?, verification_token=?, verified=0 WHERE email=?");
+                $stmt = $pdo->prepare("UPDATE users SET password=?, verification_code=?, code_expire=?, verification_token=?, verified=0 WHERE email=?");
                 $stmt->execute([$hashed, $code, $now + 600, $token, $email]);
             } else {
                 // New user
-                $stmt = $pdo->prepare("INSERT INTO users (email, password, verification_code, code_expires, verification_token, verified, avatar) VALUES (?, ?, ?, ?, ?, 0, ?)");
+                $stmt = $pdo->prepare("INSERT INTO users (email, password, verification_code, code_expire, verification_token, verified, avatar) VALUES (?, ?, ?, ?, ?, 0, ?)");
                 $stmt->execute([$email, $hashed, $code, $now + 600, $token, "https://ui-avatars.com/api/?name=$email&background=2563eb&color=fff"
                 ]);
             }
@@ -140,11 +145,11 @@ if (isset($_POST['verify_code'])) {
             $errors[] = "User not found.";
         } elseif ($user['verified']) {
             $errors[] = "Account already verified.";
-        } elseif (time() > $user['code_expires']) {
+        } elseif (time() > $user['code_expire']) {
             $errors[] = "Code expired. Please resend.";
             $showVerification = true;
         } elseif ($codeInput == $user['verification_code']) {
-            $stmt = $pdo->prepare("UPDATE users SET verified=1, verification_token=NULL, verification_code=NULL, code_expires=NULL WHERE email=?");
+            $stmt = $pdo->prepare("UPDATE users SET verified=1, verification_token=NULL, verification_code=NULL, code_expire=NULL WHERE email=?");
             $stmt->execute([$email]);
             unset($_SESSION['pending_email']);
             unset($_SESSION['code_sent_time']);
@@ -166,7 +171,7 @@ if (isset($_GET['resend']) && isset($_SESSION['pending_email'])) {
         $token = bin2hex(random_bytes(16));
         $now = time();
 
-        $stmt = $pdo->prepare("UPDATE users SET verification_code=?, code_expires=?, verification_token=? WHERE email=?");
+        $stmt = $pdo->prepare("UPDATE users SET verification_code=?, code_expire=?, verification_token=? WHERE email=?");
         $stmt->execute([$code, $now + 600, $token, $email]);
 
         if (sendVerificationEmail($email, $code, $token)) {
@@ -179,6 +184,7 @@ if (isset($_GET['resend']) && isset($_SESSION['pending_email'])) {
 }
 $codeSentTime = $_SESSION['code_sent_time'] ?? 0;
 $timeLeft = max(0, 600 - (time() - $codeSentTime));
+error_reporting(1);
 ?>
 
 <!DOCTYPE html>
@@ -190,7 +196,6 @@ $timeLeft = max(0, 600 - (time() - $codeSentTime));
   <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
         <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="../includes/css/body.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script>
   tailwind.config = { darkMode: 'class' }
 </script>

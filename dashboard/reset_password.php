@@ -59,12 +59,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">Reset Password</h1>
             <p class="text-gray-500 dark:text-gray-400">Create a new password</p>
         </div>
-        
-        <?php if ($error): ?>
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
-                <?php echo $error; ?>
-            </div>
-        <?php endif; ?>
+        <?php if (!empty($error)): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'error',
+            title: <?= json_encode($error); ?>,
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'bg-red-500 text-white dark:bg-red-700 dark:text-gray-200 p-2 mb-2 rounded shadow-lg'
+            }
+        });
+    </script>
+<?php endif; ?>
         
         <?php if ($success): ?>
             <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-xl">

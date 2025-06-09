@@ -99,6 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <script src="../tailwind.js"></script>  <script src="../includes/js/theme.js"></script>
         <link rel="stylesheet" href="../includes/font-awesome/css/all.css">
             <link rel="stylesheet" href="../includes/css/body.css">
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
   tailwind.config = { darkMode: 'class' }
 </script>
@@ -110,12 +112,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="text-gray-500 dark:text-gray-400">Enter your email to reset your password</p>
         </div>
         
+
         <?php if ($error): ?>
-            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-xl">
-                <?php echo $error; ?>
-            </div>
-        <?php endif; ?>
-        
+    <script>
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'error',
+            title: <?php echo json_encode($error); ?>,
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            customClass: {
+                popup: 'bg-red-100 border border-red-400 text-red-700 rounded-xl p-4'
+            }
+        });
+    </script>
+<?php endif; ?>
         <form method="post" class="space-y-6" autocomplete="off">
             <div class="relative">
                 <input  

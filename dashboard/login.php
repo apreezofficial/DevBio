@@ -47,6 +47,58 @@ exit;
     }
 }
 ?>
+<?php if (isset($_SESSION['success_msg']) || isset($_SESSION['error_msg']) || isset($_SESSION['warning_msg'])): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        <?php if (isset($_SESSION['success_msg'])): ?>
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'success',
+                title: <?= json_encode($_SESSION['success_msg']); ?>,
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'bg-green-500 text-white p-2 mb-2 rounded'
+                }
+            });
+        <?php unset($_SESSION['success_msg']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error_msg'])): ?>
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'error',
+                title: <?= json_encode($_SESSION['error_msg']); ?>,
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'bg-red-500 text-white p-2 mb-2 rounded'
+                }
+            });
+        <?php unset($_SESSION['error_msg']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['warning_msg'])): ?>
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'warning',
+                title: <?= json_encode($_SESSION['warning_msg']); ?>,
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'bg-yellow-500 text-white p-2 mb-2 rounded'
+                }
+            });
+        <?php unset($_SESSION['warning_msg']); ?>
+        <?php endif; ?>
+    </script>
+<?php endif; ?>
 
 <!DOCTYPE html>
 <html>
@@ -64,9 +116,25 @@ exit;
 </head>
 <body class="bg-gray-50 dark:bg-[#0D0D0D] text-gray-900 dark:text-white min-h-screen flex items-center justify-center px-4">
     <div class="max-w-md mx-auto mt-16 p-8 rounded-3xl glass-effect shadow-xl transition-colors duration-500">
+<?php if (!empty($errors)): ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
         <?php foreach ($errors as $err): ?>
-            <div class="bg-red-500 text-white p-2 mb-2 rounded"><?= $err ?></div>
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'error',
+                title: <?= json_encode($err); ?>,
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 border border-red-400 dark:border-red-700 rounded-lg p-4'
+                }
+            });
         <?php endforeach; ?>
+    </script>
+<?php endif; ?>
           <div class="flex justify-between items-center mb-8">
     <h2
       class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 select-none"

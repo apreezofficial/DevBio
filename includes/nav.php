@@ -18,9 +18,10 @@
 
     <!-- Desktop Nav Links -->
     <div class="hidden md:flex space-x-6 text-sm font-medium items-center">
-      <a href="#" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Home</a>
-      <a href="#" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Generate</a>
-      <a href="#" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Docs</a>
+      <a href="/" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Home</a>
+      <a href="/dashboard/new.php" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Generate</a>
+      <a href="/docs" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Docs</a>
+            <a href="/dashboard/login.php" class="text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white transition hover:-translate-y-0.5">Client Area</a>
       
       <!-- Theme Toggle -->
       <button id="theme-toggle" class="ml-4 p-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-transform active:scale-95">
@@ -56,14 +57,17 @@
       
       <!-- Mobile Navigation Links -->
       <nav class="flex-1 space-y-2 mt-4">
-        <a href="#" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
+        <a href="/" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
           <i class="fas fa-home mr-3 text-indigo-500"></i> Home
         </a>
-        <a href="#" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
+        <a href="/dashboard/new.php" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
           <i class="fas fa-bolt mr-3 text-indigo-500"></i> Generate
         </a>
-        <a href="#" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
+        <a href="/docs" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
           <i class="fas fa-book mr-3 text-indigo-500"></i> Docs
+        </a>
+                <a href="/dashboard/login.php" class="block px-4 py-3 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition flex items-center">
+          <i class="fa fa-person mr-3 text-indigo-500"></i> Client Area
         </a>
       </nav>
       

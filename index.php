@@ -129,32 +129,6 @@ require 'includes/settings.php';
     </div>
   </div>
 </section>
-<section id="skills" class="relative bg-white dark:bg-black py-20 px-6 max-w-6xl mx-auto rounded-xl shadow-2xl overflow-hidden">
-  <h2 class="text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-14" id="headertext">Works with yout Favourite Stack</h2>
-
-  <div class="relative w-full overflow-hidden">
-    <!-- Left Gradient Overlay -->
-    <div class="absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none"></div>
-
-    <!-- Right Gradient Overlay -->
-    <div class="absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none"></div>
-
-    <!-- Skills Row -->
-    <div class="flex gap-10 items-center animate-slide px-6">
-      <img src="https://api.iconify.design/logos:html-5.svg" alt="HTML" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScf0ve2UWJpAj6n8s-8Sc5-VwXg3eIlkPOCSl0fL_4Mg&s" alt="CSS" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:javascript.svg" alt="JS" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:typescript-icon.svg" alt="TypeScript" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:react.svg" alt="React" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:php.svg" alt="PHP" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:firebase.svg" alt="Firebase" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:bootstrap.svg" alt="Bootstrap" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0QwwF1IzPG_q-9lkX8hQUjBXVfu1B_4RqsnAfUscUKpexaup6T6BwkVU&s" alt="Tailwind" class="h-14 w-14 opacity-60 transition-all duration-300" />
-      <img src="https://api.iconify.design/logos:git.svg" alt="Git" class="h-14 w-14 opacity-60 transition-all duration-300" />
-    </div>
-  </div>
-</section>
     <!--Why Section-->
 <section class="py-20 bg-white dark:bg-zinc-950 px-6 sm:px-10 overflow-hidden">
   <div class="max-w-6xl mx-auto text-center">

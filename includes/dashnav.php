@@ -15,58 +15,88 @@ if (isset($_SESSION['user_id'])) {
 }
 ?>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<nav class="bg-white dark:bg-[#0D0D0D] border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between shadow-sm">
-  <!-- Left: Logo -->
-  <a href="./" class="flex items-center space-x-2">
-    <img src="/assets/logo.svg" alt="Logo" class="w-8 h-8">
-    <span class="text-xl font-bold text-gray-800 dark:text-gray-100"><?php echo $appName;?></span>
+     <nav class="bg-white/90 dark:bg-[#0D0D0D]/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between">
+  <!-- Logo -->
+  <a href="./" class="flex items-center space-x-3 group">
+    <div class="p-1.5 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 group-hover:rotate-12 transition-transform duration-300">
+      <img src="/assets/logo.svg" alt="Logo" class="w-6 h-6">
+    </div>
+    <span class="text-xl font-semibold text-gray-800 dark:text-gray-100 tracking-tight"><?php echo $appName; ?></span>
   </a>
-  <div class="hidden md:flex space-x-6">
-    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary transition">Dashboard</a>
-    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary transition">Projects</a>
-    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary transition">Settings</a>
+
+  <!-- Navigation Links -->
+  <div class="hidden md:flex space-x-1">
+    <a href="#" class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg transition-all hover:bg-gray-100 dark:hover:bg-gray-800/50">
+      Dashboard
+    </a>
+    <a href="#" class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg transition-all hover:bg-gray-100 dark:hover:bg-gray-800/50">
+      Projects
+    </a>
+    <a href="#" class="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 rounded-lg transition-all hover:bg-gray-100 dark:hover:bg-gray-800/50">
+      Settings
+    </a>
   </div>
 
-  <!-- Right: User / Theme Switch -->
-  <div class="flex items-center space-x-4">
-        <button id="theme-toggle" class="p-2 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 transition">
-      <svg id="theme-icon" class="w-5 h-5 text-black dark:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <!-- Sun Icon as default -->
-        <path d="M12 3v2m0 14v2m9-9h-2M5 1" />
+  <!-- Right Side Controls -->
+  <div class="flex items-center space-x-3">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all" aria-label="Toggle theme">
+      <svg id="theme-icon" class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24">
+        <path class="hidden dark:block" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 16a4 4 0 100-8 4 4 0 000 8z"/>
+        <path class="dark:hidden" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4V3m0 18v-1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M5.636 5.636l-.707.707M16.364 5.636l.707.707M5.636 18.364l.707.707"/>
       </svg>
     </button>
-   <!-- User Initial Circle -->
-<div class="relative group">
-  <button onclick="toggleUserMenu()" class="w-10 h-10 rounded-full overflow-hidden shadow-lg ring-2 ring-purple-500 transition-transform hover:scale-105 focus:outline-none">
-    <?php if ($user && !empty($user['avatar'])): ?>
-      <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="Avatar" class="object-cover w-full h-full">
-    <?php else: ?>
-      <div class="w-full h-full flex items-center justify-center bg-purple-600 text-white font-semibold text-lg">
-        <?= strtoupper(substr($user['email'], 0, 1)) ?>
-      </div>
-    <?php endif; ?>
-  </button>
 
-  <!-- Dropdown Menu -->
-  <div id="userMenu" class="absolute right-0 mt-2 w-44 bg-white dark:bg-[#1f1f1f] text-sm rounded-md shadow-lg p-2 z-20 hidden">
-    <a href="profile.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
-    <a href="settings.php" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
-    <a href="logout.php" class="block px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</a>
-  </div>
-</div>
+    <!-- User Menu -->
+    <div class="relative">
+      <button onclick="toggleUserMenu()" class="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent hover:ring-purple-400/30 transition-all focus:outline-none">
+        <?php if ($user && !empty($user['avatar'])): ?>
+          <img src="<?= htmlspecialchars($user['avatar']) ?>" alt="Avatar" class="object-cover w-full h-full">
+        <?php else: ?>
+          <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600 text-white font-medium">
+            <?= strtoupper(substr($user['email'], 0, 1)) ?>
+          </div>
+        <?php endif; ?>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-1.5 z-20 hidden border border-gray-100 dark:border-gray-700">
+        <div class="px-4 py-2.5 border-b border-gray-100 dark:border-gray-700">
+          <p class="text-sm font-medium text-gray-800 dark:text-gray-200"><?= htmlspecialchars($user['name'] ?? 'User') ?></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 truncate"><?= htmlspecialchars($user['email']) ?></p>
+        </div>
+        <a href="profile.php" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+          <i class="fas fa-user mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"></i> Profile
+        </a>
+        <a href="settings.php" class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+          <i class="fas fa-cog mr-3 text-gray-400 dark:text-gray-500 w-4 text-center"></i> Settings
+        </a>
+        <a href="logout.php" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+          <i class="fas fa-sign-out-alt mr-3 text-red-400 w-4 text-center"></i> Logout
+        </a>
+      </div>
+    </div>
   </div>
 </nav>
+
 <script>
   function toggleUserMenu() {
     const menu = document.getElementById("userMenu");
     menu.classList.toggle("hidden");
   }
+
+  // Close menu when clicking outside
   document.addEventListener("click", function(e) {
     const menu = document.getElementById("userMenu");
-    const trigger = e.target.closest("button");
-
-    if (!e.target.closest("#userMenu") && !trigger) {
+    if (!e.target.closest("#userMenu") && !e.target.closest("button[onclick='toggleUserMenu()']")) {
       menu.classList.add("hidden");
     }
+  });
+
+  // Theme toggle functionality
+  const themeToggle = document.getElementById("theme-toggle");
+  themeToggle.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark");
+    localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
   });
 </script>

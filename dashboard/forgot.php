@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
@@ -14,55 +14,52 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
-    
+
     if (empty($email)) {
         $error = 'Please enter your email address';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address';
     } else {
-        // Check if email exists in database
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         if ($result->num_rows === 0) {
             $error = 'No account found with that email address';
         } else {
             $user = $result->fetch_assoc();
             $verification_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-            
-            // Generate token for email link (non-expiring)
             $token = bin2hex(random_bytes(32));
-            
-            // Store in database
+
+            // Store reset token and code
             $stmt = $conn->prepare("UPDATE users SET reset_token = ?, reset_code = ?, code_expires = DATE_ADD(NOW(), INTERVAL 10 MINUTE) WHERE id = ?");
             $stmt->bind_param("ssi", $token, $verification_code, $user['id']);
             $stmt->execute();
-            
-            // Send email with both code and link
+
+            // Send mail
             $mail = new PHPMailer(true);
-            
+
             try {
-                // Server settings
+                // SMTP Settings
                 $mail->isSMTP();
                 $mail->Host       = $_ENV['MAIL_HOST'];
                 $mail->SMTPAuth   = true;
                 $mail->Username   = $_ENV['MAIL_USERNAME'];
                 $mail->Password   = $_ENV['MAIL_PASSWORD'];
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-                $mail->Port       = 465;
-                
-                // Recipients
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // ✅ STARTTLS
+                $mail->Port       = 587; // ✅ Port for STARTTLS
+
+                // Recipient
                 $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_NAME']);
                 $mail->addAddress($email);
-                
+
                 // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Password Reset Request';
-                
+
                 $reset_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/dashboard/verify_forgot.php?token=$token";
-                
+
                 $mail->Body = "
                     <h2>Password Reset Request</h2>
                     <p>We received a request to reset your password. Here's your verification code:</p>
@@ -72,18 +69,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p><a href='$reset_link' style='color: #6366f1; text-decoration: underline;'>Reset Password</a></p>
                     <p>If you didn't request this, please ignore this email.</p>
                 ";
-                
+
                 $mail->AltBody = "Password Reset Request\n\nVerification Code: $verification_code (expires in 10 minutes)\n\nOr use this link: $reset_link";
-                
+
                 $mail->send();
-                
-                // Set cookie with code (expires in 10 minutes)
+
+                // Set cookie
                 setcookie('reset_code', $verification_code, time() + 600, '/');
-                
-                // Redirect to code verification page
+
+                // Redirect
                 header("Location: verify_code.php?email=" . urlencode($email));
                 exit();
-                
+
             } catch (Exception $e) {
                 $error = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
@@ -91,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-white dark:bg-[#111]">
 <head>

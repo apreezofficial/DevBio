@@ -30,8 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'No account found with that email address';
         } else {
             $user = $result->fetch_assoc();
-            
-            // Generate verification code (6 digits)
             $verification_code = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
             
             // Generate token for email link (non-expiring)
@@ -48,15 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 // Server settings
                 $mail->isSMTP();
-                $mail->Host       = $_ENV['SMTP_HOST'];
+                $mail->Host       = $_ENV['MAIL_HOST'];
                 $mail->SMTPAuth   = true;
-                $mail->Username   = $_ENV['SMTP_USER'];
-                $mail->Password   = $_ENV['SMTP_PASS'];
+                $mail->Username   = $_ENV['MAIL_USERNAME'];
+                $mail->Password   = $_ENV['MAIL_PASSWORD'];
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port       = 465;
                 
                 // Recipients
-                $mail->setFrom($_ENV['SMTP_FROM_EMAIL'], $_ENV['SMTP_FROM_NAME']);
+                $mail->setFrom($_ENV['MAIL_FROM'], $_ENV['MAIL_NAME']);
                 $mail->addAddress($email);
                 
                 // Content

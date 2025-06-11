@@ -155,7 +155,7 @@ function validateRequiredFields(array $input): void {
 }
 
 // ========== PROMPT GENERATION ==========
-
+$date = date("Y-m-d");
 function buildPrompt(array $input): string {
     extract($input); // imports all keys as variables
 
@@ -174,7 +174,33 @@ function buildPrompt(array $input): string {
     }
 
     return <<<EOD
+You are a top-tier developer assistant. Generate a complete, error-free, and professional portfolio project based on this:
 
+Developer Name: $dev_name  
+Email: $dev_email  
+Role/Title: $tech_role  
+Frontend Tech: $frontend_tech  
+Styling: $styling  
+Additional Components: $components  
+Avatar URL: $avatar_url
+
+Previous Projects details of the Developer( $dev_name ):
+$projects
+
+Format each file like:
+<name>filename<name>
+...file content...
+<name>filename<name>
+on no condition mist your file formatting be differnt from tgat wbich i have given you, let me say ut again,
+<name>filename<name>
+...file content...
+<name>filename<name>
+
+CURLOPT_SSL_VERIFYPEER
+Use Font Awesome icons unless told otherwise. Code must be production-ready, fast, modern, and properly structured.
+Today date is $date
+
+The dev profile you are to generate you should always use the latest info!!! and up to date versions of each technologies
 EOD;
 }
 

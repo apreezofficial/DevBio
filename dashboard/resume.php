@@ -355,6 +355,12 @@ document.getElementById('resumeForm').addEventListener('submit', async function 
 
     // 🔗 Link generation
     document.getElementById('linkBtn').onclick = () => {
+      setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }, 100);
       linkInput.classList.remove('hidden');
       linkInput.value = fileUrl;
     };

@@ -33,6 +33,24 @@ if (!isset($_SESSION['user_id'])) {
   <script>
   tailwind.config = { darkMode: 'class' }
 </script>
+<script>
+  // tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      animation: {
+        'float': 'float 3s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
+      }
+    }
+  }
+}
+</script>
 </head>
 <body class="bg-white text-gray-800 dark:bg-[#0D0D0D] dark:text-gray-100 transition-colors duration-300">
   <?php include '../includes/dashnav.php';?>
@@ -43,7 +61,7 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Welcome Section -->
     <header class="mb-10">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
-        Welcome back, <span class="text-indigo-600 dark:text-indigo-400"><?= htmlspecialchars($user['name']) ?></span> 👋
+        Welcome back, <span class="text-indigo-600 dark:text-indigo-400 animate-float"> 👋 </span>
       </h1>
       <p class="mt-3 text-lg text-gray-500 dark:text-gray-400">
         Let's craft your perfect developer portfolio. Where would you like to start?

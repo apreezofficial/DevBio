@@ -79,6 +79,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </div>
 </nav>
+<div style="height:50px"></div>
 
 <script>
   function toggleUserMenu() {

@@ -191,7 +191,7 @@ Format each file like:
 <name>filename<name>
 ...file content...
 <name>filename<name>
-on no condition mist your file formatting be differnt from tgat wbich i have given you, let me say ut again,
+on no condition must your file formatting be differnt from that wbich i have given you, let me say it again,
 <name>filename<name>
 ...file content...
 <name>filename<name>

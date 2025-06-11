@@ -1,3 +1,24 @@
+<?php
+include '../includes/settings.php';
+if (isset($_COOKIE['user_id'])) {
+  $_SESSION['user_id'] = $_COOKIE['user_id'];
+  $_SESSION['email'] = $_COOKIE['email'];
+}
+
+
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['message'] = "You have to login to access this feature.";
+
+    // Store the full current URL in session
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    $current_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $_SESSION['redirect_url'] = $current_url;
+
+    header('Location: login.php');
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -29,7 +50,7 @@
   tailwind.config = { darkMode: 'class' }
 </script>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
-<div class="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+  <?php include '../includes/dashnav.php' ?><div class="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
   <h2 class="text-2xl font-bold text-center text-blue-600 dark:text-purple-400 mb-6">Resume Builder</h2>
 
   <form id="resumeForm" method="POST">

@@ -14,6 +14,8 @@ if (isset($_SESSION['user_id'])) {
     $stmt->close();
 }
 ?>
+         <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#0D0D0D]/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between">
   
@@ -94,4 +96,27 @@ if (isset($_SESSION['user_id'])) {
       menu.classList.add("hidden");
     }
   });
+  function showToast(icon, title, message, isSuccess = false) {
+    const toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        background: isSuccess ? 
+            'linear-gradient(to right, #2563eb, #1e40af)' : 
+            'linear-gradient(to right, #dc2626, #b91c1c)',
+        color: '#ffffff',
+        iconColor: '#ffffff',
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+    
+    toast.fire({
+        icon: icon,
+        text: message
+    })
+}
 </script>

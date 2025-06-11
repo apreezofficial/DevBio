@@ -111,10 +111,70 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
 <div class="step-panel hidden" id="step-3">
-  <div class="mb-4">
-    <label class="block mb-2 font-medium">Professional Summary  <span class="text-red-500">*</span></label>
-    <textarea name="summary" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" rows="4" placeholder="Brief summary about yourself..."></textarea>
+<div class="mb-4 relative">
+  <div class="flex justify-between items-center mb-2">
+    <label class="block font-medium">Professional Summary <span class="text-red-500">*</span></label>
+    <button 
+      type="button" 
+      onclick="rewriteWithAI(this)" 
+      class="flex items-center gap-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md transition-all"
+    >
+      <span id="rewriteText">Rewrite with AI</span>
+      <svg id="rewriteIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    </button>
   </div>
+  <textarea 
+    name="summary" 
+    required 
+    class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" 
+    rows="4" 
+    placeholder="Brief summary about yourself..."
+    id="summaryTextarea"
+  ></textarea>
+</div>
+
+<script>
+function rewriteWithAI(button) {
+  const textarea = document.getElementById('summaryTextarea');
+  const icon = document.getElementById('rewriteIcon');
+  const text = document.getElementById('rewriteText');
+  
+  // Save original content
+  const originalContent = textarea.value;
+  
+  // Change UI state
+  icon.classList.add('animate-spin');
+  text.textContent = 'Rewriting...';
+  button.disabled = true;
+  
+  // Simulate fast API call to poiliinnations.ai
+  setTimeout(() => {
+    fetch('https://text.pollinations.ai/fk', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: originalContent })
+    })
+    .then(response => response.json())
+    .then(data => {
+      textarea.value = data.rewrittenText;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      textarea.value = originalContent; // Revert on error
+    })
+    .finally(() => {
+      // Restore UI
+      icon.classList.remove('animate-spin');
+      text.textContent = 'Rewrite with AI';
+      button.disabled = false;
+    });
+  }, 100); // 100ms delay to simulate fast response
+}
+</script>
 </div>
 <div class="step-panel hidden" id="step-4">
   <div id="educationContainer">
@@ -212,11 +272,10 @@ if (!isset($_SESSION['user_id'])) {
       field.classList.add('border-red-500', 'shake');
       field.classList.remove('border-gray-300');
       valid = false;
-
-
       setTimeout(() => {
         field.classList.remove('shake');
       }, 500);
+      showToast('error', 'Login Successful', 'Fill in all required fields (*)', false);
     } else {
       field.classList.remove('border-red-500');
       field.classList.add('border-gray-300');

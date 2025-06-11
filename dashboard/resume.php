@@ -111,13 +111,14 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
 <div class="step-panel hidden" id="step-3">
-<div class="mb-4 relative">
+  <div class="mb-4 relative">
   <div class="flex justify-between items-center mb-2">
     <label class="block font-medium">Professional Summary <span class="text-red-500">*</span></label>
     <button 
       type="button" 
-      onclick="rewriteWithAI(this)" 
+      onclick="rewriteWithAI()" 
       class="flex items-center gap-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md transition-all"
+      id="aiRewriteBtn"
     >
       <span id="rewriteText">Rewrite with AI</span>
       <svg id="rewriteIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,45 +137,51 @@ if (!isset($_SESSION['user_id'])) {
 </div>
 
 <script>
-function rewriteWithAI(button) {
+async function rewriteWithAI() {
   const textarea = document.getElementById('summaryTextarea');
+  const btn = document.getElementById('aiRewriteBtn');
   const icon = document.getElementById('rewriteIcon');
-  const text = document.getElementById('rewriteText');
+  const label = document.getElementById('rewriteText');
   
-  // Save original content
-  const originalContent = textarea.value;
-  
-  // Change UI state
+  const originalText = textarea.value.trim();
+  if (!originalText) return alert("Please enter text first");
+
+  // UI Loading State
+  btn.disabled = true;
   icon.classList.add('animate-spin');
-  text.textContent = 'Rewriting...';
-  button.disabled = true;
-  
-  // Simulate fast API call to poiliinnations.ai
-  setTimeout(() => {
-    fetch('https://text.pollinations.ai/fk', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text: originalContent })
-    })
-    .then(response => response.json())
-    .then(data => {
-      textarea.value = data.rewrittenText;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      textarea.value = originalContent; // Revert on error
-    })
-    .finally(() => {
-      // Restore UI
-      icon.classList.remove('animate-spin');
-      text.textContent = 'Rewrite with AI';
-      button.disabled = false;
-    });
-  }, 100); // 100ms delay to simulate fast response
+  label.textContent = 'Rewriting...';
+
+  try {
+    // FAST GET Request (simplest implementation)
+    const prompt = encodeURIComponent(
+      `Rewrite this professional summary to be more compelling:\n\n${originalText}\n\n` +
+      `Guidelines:\n` +
+      `- Use strong action verbs\n` +
+      `- Quantify achievements\n` +
+      `- Keep 3-5 sentences\n` +
+      `- Technical focus\n` +
+      `- Professional tone`
+    );
+
+    const response = await fetch(`https://text.pollinations.ai/${prompt}?max_tokens=200&temperature=0.7`);
+    
+    if (!response.ok) throw new Error('API Error');
+    
+    const data = await response.text();
+    textarea.value = data.trim();
+    
+  } catch (error) {
+    console.error("Rewrite failed:", error);
+    textarea.value = originalText; // Revert on error
+  } finally {
+    // Reset UI
+    btn.disabled = false;
+    icon.classList.remove('animate-spin');
+    label.textContent = 'Rewrite with AI';
+  }
 }
 </script>
+  
 </div>
 <div class="step-panel hidden" id="step-4">
   <div id="educationContainer">

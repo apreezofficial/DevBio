@@ -35,7 +35,6 @@ foreach (['fullname' => $full, 'position' => $pos, 'email' => $email, 'phone' =>
 $prompt = "Generate a strong modern resume:\n";
 $prompt .= "Dont say anything apart fron the resume itself:\n";
 $prompt .= "Name: $full\nPosition: $pos\nEmail: $email\nPhone: $phone\nLocation: $loc\nSummary: $sum\n";
-
 // add education entries
 if (!empty($_POST['school'])) {
     $prompt .= "Education:\n";

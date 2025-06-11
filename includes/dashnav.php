@@ -15,7 +15,8 @@ if (isset($_SESSION['user_id'])) {
 }
 ?>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-     <nav class="bg-white/90 dark:bg-[#0D0D0D]/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#0D0D0D]/90 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between">
+  
   <!-- Logo -->
   <a href="./" class="flex items-center space-x-3 group">
     <div class="p-1.5 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 group-hover:rotate-12 transition-transform duration-300">

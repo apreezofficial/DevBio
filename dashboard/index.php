@@ -52,14 +52,9 @@ if (!isset($_SESSION['user_id'])) {
         <p class="text-sm text-gray-500 dark:text-gray-400">Add a new Portfolio to your List.</p>
       </a>
       
-      <a href="resume.php" class="hidden bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
+      <a href="resume.php" class="bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
         <h2 class="font-semibold text-lg mb-2">📝 Create Resume</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Update your developer bio and skills.</p>
-      </a>
-      
-      <a href="theme-customizer.php" class=" hidden bg-white dark:bg-[#1f2937] hover:shadow-xl transition p-5 rounded-xl border border-gray-200 dark:border-gray-700">
-        <h2 class="font-semibold text-lg mb-2">🎨 Customize Theme</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400">Choose colors, fonts, and layout.</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Create your resume </p>
       </a>
     </div>
 

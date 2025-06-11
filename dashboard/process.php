@@ -33,6 +33,7 @@ foreach (['fullname' => $full, 'position' => $pos, 'email' => $email, 'phone' =>
 
 // Build prompt text
 $prompt = "Generate a strong modern resume:\n";
+$prompt .= "Fill in empty spaces with cool dumny data, dont say anything apart fron the resumw itself:\n";
 $prompt .= "Name: $full\nPosition: $pos\nEmail: $email\nPhone: $phone\nLocation: $loc\nSummary: $sum\n";
 
 // add education entries

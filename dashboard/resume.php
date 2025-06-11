@@ -144,7 +144,7 @@ async function rewriteWithAI() {
   const label = document.getElementById('rewriteText');
   
   const originalText = textarea.value.trim();
-  if (!originalText) return alert("Please enter text first");
+  if (!originalText) return showToast('error', 'Failed', 'Please pass in some text First', false);
 
   // UI Loading State
   btn.disabled = true;
@@ -160,7 +160,8 @@ async function rewriteWithAI() {
       `- Quantify achievements\n` +
       `- Keep 3-5 sentences\n` +
       `- Technical focus\n` +
-      `- Professional tone`
+      `- Professional tone\n` +
+      `-Generate an awesome one no matter what the users say`
     );
 
     const response = await fetch(`https://text.pollinations.ai/${prompt}?max_tokens=200&temperature=0.7`);
@@ -171,7 +172,6 @@ async function rewriteWithAI() {
     textarea.value = data.trim();
     
   } catch (error) {
-    console.error("Rewrite failed:", error);
     textarea.value = originalText; // Revert on error
   } finally {
     // Reset UI

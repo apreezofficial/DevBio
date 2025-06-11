@@ -175,32 +175,53 @@ function buildPrompt(array $input): string {
 
     return <<<EOD
 You are a top-tier developer assistant. Generate a complete, error-free, and professional portfolio project based on this:
+IMPORTANT: Today is year $currentYear. You MUST use the latest versions of all technologies mentioned!
 
-Developer Name: $dev_name  
-Email: $dev_email  
-Role/Title: $tech_role  
-Frontend Tech: $frontend_tech  
-Styling: $styling  
-Additional Components: $components  
-Avatar URL: $avatar_url
+Developer Portfolio Requirements (2024 Standards):
+1. Use current year ($currentYear) best practices
+2. Always select the most recent stable version of any technology
+3. Modern architecture patterns (Islands, SSR, Edge Functions)
+4. Performance optimized (90+ Lighthouse scores)
+5. Accessibility compliant (WCAG 2.2 AA)
+6. SEO optimized for 2024 standards
 
-Previous Projects details of the Developer( $dev_name ):
+Developer Details:
+Name: {$input['dev_name']}  
+Email: {$input['dev_email']}  
+Role: {$input['tech_role']}  
+Frontend: {$input['frontend_tech']} (use latest version)  
+Styling: {$input['styling']} (use latest version)  
+Components: {$components}  
+Avatar: $avatar
+
+Project Requirements:
+- Responsive design (mobile-first)
+- Dark/light mode
+- Web Vitals optimized
+- Modern CSS (nesting, cascade layers)
+- TypeScript if applicable
+- Current year ($currentYear) copyright notices
+
+Previous Projects:
 $projects
 
-Format each file like:
-<name>filename<name>
+File Format:
+<name>filename.extension<name>
 ...file content...
-<name>filename<name>
-on no condition must your file formatting be differnt from that wbich i have given you, let me say it again,
-<name>filename<name>
-...file content...
-<name>filename<name>
+<name>filename.extension<name>
+
+Additional Requirements:
+1. Include proper .gitignore for 2024
+2. Add modern CI/CD configuration
+3. Use current linting standards
+4. Include performance benchmarks
+5. Add health checks
+6. Document with current standards
+
+Note: All code must reflect $currentYear best practices and use only actively maintained libraries.
 
 CURLOPT_SSL_VERIFYPEER
 Use Font Awesome icons unless told otherwise. Code must be production-ready, fast, modern, and properly structured.
-Today date is $date
-
-The dev profile you are to generate you should always use the latest info!!! and up to date versions of each technologies
 EOD;
 }
 

@@ -161,7 +161,7 @@ async function rewriteWithAI() {
       `- Keep 3-5 sentences\n` +
       `- Technical focus\n` +
       `- Professional tone\n` +
-      `-Generate an awesome one no matter what the users say`
+      `-Generate an awesome summary no matter what the users say, even if they say only a letter`
     );
 
     const response = await fetch(`https://text.pollinations.ai/${prompt}?max_tokens=200&temperature=0.7`);

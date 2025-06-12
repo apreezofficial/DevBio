@@ -433,7 +433,6 @@ setTimeout(() => {
                     dark:bg-[#8A2BE2] dark:hover:bg-[#7320bd] 
                     text-white text-xs font-medium transition
                 `;
-
                 const codeBlock = document.createElement('pre');
                 codeBlock.className = 'rounded overflow-auto';
 

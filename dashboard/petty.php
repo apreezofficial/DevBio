@@ -179,10 +179,10 @@ Use current date ($date) best practices
 
 Developer Name: $dev_name  
 Email: $dev_email  
-Role/Title: $tech_role  
-Frontend Tech: $frontend_tech  
-Styling: $styling  
-Additional Components: $components  
+Developer Roles/Title: $tech_role  
+Build the portfolio with: $frontend_tech  
+Styling to use for the page: $styling  
+Additional Components to use for the page: $components  
 Avatar URL: $avatar_url
 
 Previous Projects details of the Developer( $dev_name ):
@@ -208,7 +208,7 @@ EOD;
 // ========== API CALL & PARSE ==========
 
 function callAIApi(string $prompt): string {
-    $apiUrl = "https://text.pollinations.ai/" . rawurlencode($prompt);
+    $apiUrl = "https://text.pollinations.ai/openai/" . rawurlencode($prompt);
 
     $ch = curl_init($apiUrl);
     curl_setopt_array($ch, [

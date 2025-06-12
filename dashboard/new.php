@@ -29,6 +29,51 @@ if ($user_id) {
     $stmt->close();
 }
 ?>
+<?php
+error_reporting(1);
+require_once '../includes/pdo.php'; // Your database connection file
+$user_id = $_SESSION['user_id'];
+$today = date('Y-m-d');
+
+// Get user's resume counts
+$stmt = $pdo->prepare("SELECT resume_count, last_resume_date, lifetime_count FROM user_resume_limits WHERE user_id = ?");
+$stmt->execute([$user_id]);
+$limits = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Initialize if first time user
+if (!$limits) {
+    $stmt = $pdo->prepare("INSERT INTO user_resume_limits (user_id, resume_count, last_resume_date, lifetime_count) VALUES (?, 0, NULL, 0)");
+    $stmt->execute([$user_id]);
+    $limits = ['resume_count' => 0, 'last_resume_date' => null, 'lifetime_count' => 0];
+}
+
+// Check limits
+if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 1) {
+    echo "<script>alert('You can only create 1 resume per day.'); window.location.href = 'index.php';</script>";
+    exit();
+}
+
+if ($limits['lifetime_count'] >= 10) {
+    echo "<script>alert('You have reached your lifetime limit of 10 resumes.'); window.location.href = 'index.php';</script>";
+    exit();
+}
+
+// Update counts when resume is created (put this where you process form submission)
+function updateResumeCount($pdo, $user_id) {
+    $today = date('Y-m-d');
+    
+    $stmt = $pdo->prepare("UPDATE user_resume_limits SET 
+        resume_count = CASE WHEN last_resume_date = ? THEN resume_count + 1 ELSE 1 END,
+        last_resume_date = ?,
+        lifetime_count = lifetime_count + 1
+        WHERE user_id = ?");
+    
+    $stmt->execute([$today, $today, $user_id]);
+}
+
+// Call this after successful resume creation:
+// updateResumeCount($pdo, $user_id);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

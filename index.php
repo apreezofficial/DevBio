@@ -193,7 +193,7 @@ require 'includes/settings.php';
       </div>
       <div class="testimonial-item opacity-0 absolute top-10 left-0 right-0 transition-opacity duration-700 pointer-events-none">
         <p class="text-zinc-700 dark:text-zinc-300 italic mb-6">"Devbio, has eased devs of tbe stress of creating a portfolio, just within the twinkle of an eye your portfolio is ready."</p>
-        <h3 class="text-indigo-600 font-semibold">— Big Swag, FullStack Deve</h3>
+        <h3 class="text-indigo-600 font-semibold">— Big Swag, FullStack Developer</h3>
       </div>
       <div class="testimonial-item opacity-0 absolute top-10 left-0 right-0 transition-opacity duration-700 pointer-events-none">
         <p class="text-zinc-700 dark:text-zinc-300 italic mb-6">"Perfect for busy developers — easy, clean, and fast portfolio creation!"</p>

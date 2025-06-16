@@ -37,7 +37,25 @@ if (!$limits) {
 
 // Check limits
 if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 1) {
-    echo "<script>showToast('error', 'Error', 'You can only Generate one resume per day', false); window.location.href = 'index.php';</script>";
+    echo "
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'You can only generate one resume per day',
+        timer: 2000,
+        showConfirmButton: false,
+        timerProgressBar: true,
+        toast: true,
+        position: 'top',
+        customClass: {
+            popup: 'rounded-xl p-4 bg-red-100 text-red-700 border border-red-400 shadow-lg'
+        }
+    }).then(() => {
+        window.location.href = 'index.php';
+    });
+</script>
+";
     exit();
 }
 

@@ -105,5 +105,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   tailwind.config = { darkMode: 'class' }
 </script>
 </head>
+<body class="h-full flex items-center justify-center p-4 bg-gray-50 dark:bg-[#0D0D0D] transition-colors duration-300">
+    <div class="w-full max-w-md">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 dark:text-[#EAEAEA] mb-2">Forgot Password</h1>
+            <p class="text-gray-500 dark:text-[#A1A1A1]">Enter your email to reset your password</p>
+        </div>
 
+        <!-- Error Toast -->
+        <?php if ($error): ?>
+            <script>
+                Swal.fire({
+                    toast: true,
+                    position: 'top',
+                    icon: 'error',
+                    title: <?php echo json_encode($error); ?>,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'bg-red-100 border border-red-400 text-red-700 rounded-xl p-4 dark:bg-red-800 dark:border-red-600 dark:text-red-200'
+                    }
+                });
+            </script>
+        <?php endif; ?>
+
+        <!-- Form -->
+        <form method="post" class="space-y-6" autocomplete="off">
+            <div class="relative">
+                <input  
+                    type="text"  
+                    name="email"  
+                    placeholder="Email"  
+                    class="w-full pl-14 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#222] text-gray-900 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-indigo-400 dark:focus:ring-indigo-500 transition"  
+                    value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>"
+                />
+                <i class="fas fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-indigo-400 dark:text-indigo-500 pointer-events-none"></i>
+            </div>
+
+            <button class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-700 hover:from-purple-700 hover:to-indigo-600 text-white font-extrabold rounded-xl shadow-lg hover:shadow-2xl transition">
+                Send Reset Instructions
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="mt-6 text-center">
+            <a href="login.php" class="text-indigo-600 dark:text-indigo-400 hover:underline">Back to Login</a>
+        </div>
+    </div>
+</body>
 </html>

@@ -37,7 +37,7 @@ if (!$limits) {
 }
 
 // Check limits
-if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 1) {
+if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 10) {
     echo "<script>alert('You can only create 1 resume per day.'); window.location.href = 'index.php';</script>";
     exit();
 }
@@ -59,11 +59,6 @@ function updateResumeCount($pdo, $user_id) {
     
     $stmt->execute([$today, $today, $user_id]);
 }
-register_shutdown_function(function() use ($pdo, $user_id) {
-    // Wait for 30 seconds AFTER the page is loaded
-    sleep(5);
-    updateResumeCount($pdo, $user_id);
-});
 ?>
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -406,6 +401,7 @@ async function rewriteWithAI() {
 
   <input type="text" id="generatedLink" readonly class="hidden mt-3 w-full p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100" />
 </div>
+
 <script>
 document.getElementById('resumeForm').addEventListener('submit', async function (e) {
   e.preventDefault();

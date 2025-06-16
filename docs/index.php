@@ -137,7 +137,7 @@
             Once generated, resumes can be:
             <ul class="list-disc list-inside text-[#333333] dark:text-[#A1A1A1] space-y-2 mt-2">
                 <li>Copied directly.</li>
-                <li>Downloaded in <span class="text-[#8A2BE2] font-semibold">PHP</span>, <span class="text-[#8A2BE2] font-semibold">TXT</span>, or <span class="text-[#8A2BE2] font-semibold">Markdown (MD)</span> formats.</li>
+                <li>Downloaded in <span class="text-[#8A2BE2] font-semibold">PDF</span>, <span class="text-[#8A2BE2] font-semibold">TXT</span>, or <span class="text-[#8A2BE2] font-semibold">Markdown (MD)</span> formats.</li>
                 <li>Generated as a unique shareable link.</li>
             </ul>
         </p>

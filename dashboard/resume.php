@@ -5,7 +5,6 @@ if (isset($_COOKIE['user_id'])) {
   $_SESSION['email'] = $_COOKIE['email'];
 }
 
-
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['message'] = "You have to login to access this feature.";
 
@@ -37,8 +36,8 @@ if (!$limits) {
 }
 
 // Check limits
-if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 10) {
-    echo "<script>alert('You can only create 1 resume per day.'); window.location.href = 'index.php';</script>";
+if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 1) {
+    echo "<script>showToast('error', 'Error', 'You can only Generate one resume per day', false); window.location.href = 'index.php';</script>";
     exit();
 }
 
@@ -97,7 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateResume'])) {
   tailwind.config = { darkMode: 'class' }
 </script>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
-  <?php include '../includes/dashnav.php' ?><div class="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+  <?php include '../includes/dashnav.php';?>
+<div class="max-w-3xl mx-auto mt-10 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
   <h2 class="text-2xl font-bold text-center text-blue-600 dark:text-purple-400 mb-6">Resume Builder</h2>
 
   <form id="resumeForm" method="POST">

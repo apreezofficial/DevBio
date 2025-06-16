@@ -106,5 +106,52 @@
         </p>
     </div>
 </section>
+<!-- API Usage Section -->
+<section id="api-usage" class="bg-white dark:bg-[#0D0D0D] p-6 border-l-4 border-[#FF6B00] rounded-2xl shadow-md mb-8 scroll-mt-24">
+    <h2 class="text-3xl font-bold text-black dark:text-[#EAEAEA] mb-4 flex items-center gap-2">
+        🚀 API Usage
+    </h2>
+
+    <!-- Portfolio API -->
+    <div class="mb-6">
+        <h3 class="text-2xl font-semibold text-black dark:text-[#EAEAEA] mb-2">1. Portfolio Generation</h3>
+        <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed mb-4">
+            Portfolios can be generated <span class="text-[#8A2BE2] font-semibold">unlimited times</span> by authenticated users. After inputting project and personal details, the system will generate the portfolio structure instantly.
+        </p>
+        <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed">
+            Users can:
+            <ul class="list-disc list-inside text-[#333333] dark:text-[#A1A1A1] space-y-2 mt-2">
+                <li>Copy individual files.</li>
+                <li>Download the full project as a ZIP file.</li>
+            </ul>
+        </p>
+    </div>
+
+    <!-- Resume API -->
+    <div class="mb-6">
+        <h3 class="text-2xl font-semibold text-black dark:text-[#EAEAEA] mb-2">2. Resume Generation</h3>
+        <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed mb-4">
+            Resume generation is limited to <span class="text-[#FF6B00] font-semibold">once per day</span> and a maximum of <span class="text-[#FF6B00] font-semibold">10 times per month</span> for free users.
+        </p>
+        <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed mb-4">
+            Once generated, resumes can be:
+            <ul class="list-disc list-inside text-[#333333] dark:text-[#A1A1A1] space-y-2 mt-2">
+                <li>Copied directly.</li>
+                <li>Downloaded in <span class="text-[#8A2BE2] font-semibold">PHP</span>, <span class="text-[#8A2BE2] font-semibold">TXT</span>, or <span class="text-[#8A2BE2] font-semibold">Markdown (MD)</span> formats.</li>
+                <li>Generated as a unique shareable link.</li>
+            </ul>
+        </p>
+        <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed">
+            Free users can manage and track their usage limits directly from their dashboard.
+        </p>
+    </div>
+
+    <!-- Additional Note -->
+    <div class="bg-gray-100 dark:bg-[#1A1A1A] p-4 rounded-xl mt-6">
+        <p class="text-black dark:text-[#EAEAEA] text-lg leading-relaxed">
+            <span class="text-[#FF6B00] font-semibold">Important:</span> For resume generation, if daily or monthly limits are exceeded, users can upgrade to a premium plan to unlock unlimited access.
+        </p>
+    </div>
+</section>
   </body>
   </html>

@@ -20,6 +20,13 @@ if (!isset($_SESSION['user_id'])) {
 
 ?>
 <?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateResume']) && isset($_POST['user_id'])) {
+    updateResumeCount($pdo, $_POST['user_id']);
+    echo 'success';
+    exit;
+}
+?>
+<?php
 require_once '../includes/pdo.php'; 
 $user_id = $_SESSION['user_id'];
 $today = date('Y-m-d');
@@ -401,7 +408,45 @@ async function rewriteWithAI() {
 
   <input type="text" id="generatedLink" readonly class="hidden mt-3 w-full p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100" />
 </div>
+<script>
+// Watch the resultBoxWrapper
+const resultBoxWrapper = document.getElementById('resultBoxWrapper');
 
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+        if (mutation.attributeName === 'class') {
+            if (!resultBoxWrapper.classList.contains('hidden')) {
+                alert('Result box is now visible.');
+
+                // Call PHP function via AJAX to the same file
+                updateResumeCount();
+
+                // Optional: Disconnect observer if you want this to run only once
+                // observer.disconnect();
+            }
+        }
+    });
+});
+
+// Start observing the class changes
+observer.observe(resultBoxWrapper, { attributes: true });
+
+// AJAX function to call the PHP function in the same file
+function updateResumeCount() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', window.location.href, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('updateResume=1&user_id=<?php echo $user_id; ?>');
+
+    xhr.onload = function() {
+        if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
+            alert('Resume count updated successfully.');
+        } else {
+            alert('Error updating resume count.');
+        }
+    };
+}
+</script>
 <script>
 document.getElementById('resumeForm').addEventListener('submit', async function (e) {
   e.preventDefault();

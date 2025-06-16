@@ -17,9 +17,10 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
+
 ?>
 <?php
-require_once '../includes/pdo.php'; // Your database connection file
+require_once '../includes/pdo.php'; 
 $user_id = $_SESSION['user_id'];
 $today = date('Y-m-d');
 
@@ -58,6 +59,7 @@ function updateResumeCount($pdo, $user_id) {
     
     $stmt->execute([$today, $today, $user_id]);
 }
+updateResumeCount($pdo, $user_id);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -417,124 +419,63 @@ document.getElementById('resumeForm').addEventListener('submit', async function 
   const res = await fetch('process.php', { method: 'POST', body: data });
   const json = await res.json();
 
-if (json.success) {
-  try {
+  if (json.success) {
     const resume = json.resume;
+    resultBox.textContent = resume;
+
     const timestamp = Date.now();
     const ext = formatSelect.value;
     const filename = `resume_${timestamp}.${ext}`;
     const fileUrl = `${location.origin}/resumes/${filename}`;
-    
-    // Show loading state
-    resultBox.innerHTML = '<div class="p-4 text-center"><svg class="animate-spin h-5 w-5 mx-auto text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">...</svg><p class="mt-2">Finalizing your resume...</p></div>';
-    
-    // Update count first (critical operation)
-    const countUpdated = await fetch('update_count.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: <?= $user_id ?> })
-    });
-    
-    if (!countUpdated.ok) throw new Error('Count update failed');
-
-    // Save to server
-    const saveResponse = await fetch('save_resume.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        content: resume, 
-        ext: ext, 
-        filename: filename,
-        user_id: <?= $user_id ?>
-      })
-    });
-
-    if (!saveResponse.ok) throw new Error('Save failed');
-
-    // Display final resume
-    resultBox.textContent = resume;
-    
-    // Smooth scroll after slight delay
     setTimeout(() => {
       window.scrollTo({
         top: document.body.scrollHeight,
         behavior: "smooth"
       });
-      
-      // Focus on actions section
-      document.getElementById('resume-actions').scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-    }, 300);
+    }, 100);
+    // 📦 Save to server
+    await fetch('save_resume.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: resume, ext: ext, filename: filename })
+    });
 
-    // Action handlers
-    document.getElementById('copy').onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(resume);
-        showToast('✅ Resume copied to clipboard!');
-      } catch (err) {
-        showToast('❌ Failed to copy. Please try again.');
-      }
+    // 📋 Copy
+    document.getElementById('copy').onclick = () => {
+      navigator.clipboard.writeText(resume)
+        .then(() => alert('📋 Resume copied!'))
+        .catch(() => alert('❌ Failed to copy.'));
     };
 
+    // 📥 Download
     document.getElementById('download').onclick = () => {
       const mimeTypes = {
         pdf: 'application/pdf',
         txt: 'text/plain',
-        md: 'text/markdown',
-        docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        md: 'text/markdown'
       };
-      
-      try {
-        const blob = new Blob([resume], { type: mimeTypes[ext] || 'text/plain' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        showToast('📥 Download started!');
-      } catch (err) {
-        showToast('❌ Download failed. Please try again.');
-      }
+      const blob = new Blob([resume], { type: mimeTypes[ext] });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
     };
 
+    // 🔗 Link generation
     document.getElementById('linkBtn').onclick = () => {
+      setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }, 100);
       linkInput.classList.remove('hidden');
       linkInput.value = fileUrl;
-      linkInput.select();
-      showToast('🔗 Link ready to share!');
-      
-      // Auto-hide after delay
-      setTimeout(() => {
-        window.scrollTo({
-          top: linkInput.offsetTop - 20,
-          behavior: "smooth"
-        });
-      }, 100);
     };
 
-  } catch (error) {
-    console.error('Resume processing error:', error);
-    resultBox.innerHTML = `<div class="p-4 bg-red-50 text-red-600 rounded-lg">
-      <p>⚠️ Error processing your resume. Please try again.</p>
-      <button onclick="window.location.reload()" class="mt-2 text-sm underline">Retry</button>
-    </div>`;
+  } else {
+    resultBox.textContent = `❌ Error: ${json.message || 'Unknown error.'}`;
   }
-}
-
-// Helper function
-function showToast(message) {
-  const toast = document.createElement('div');
-  toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg text-sm animate-fade-in-out';
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
-}
 });
 </script>
     <script src="../includes/js/theme.js"></script>

@@ -40,7 +40,7 @@
 </div>
 
 <!-- Introduction Section -->
-<section id="introduction" class="bg-white dark:bg-[#0D0D0D] p-6 border-l-4 border-[#FF6B00] rounded-2xl shadow-md mb-8 scroll-mt-24">
+<section id="introduction" class="bg-white dark:bg-[#0D0D0D] p-6 border-l-4 border-[#6366F1] rounded-2xl shadow-md mb-8 scroll-mt-24">
     <h2 class="text-3xl font-bold text-black dark:text-[#EAEAEA] mb-4 flex items-center gap-2">
         ✨ Introduction
     </h2>
@@ -61,7 +61,7 @@
         <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed mb-4">
             Users can register using their email address. Upon registration, a unique verification code and a verification link will be sent to the provided email. 
             The user can choose to verify using either the code or the link. 
-            <span class="text-[#FF6B00] font-semibold">Note:</span> The verification code is valid for <span class="text-[#8A2BE2] font-semibold">10 minutes</span>.
+            <span class="text-[#6366F1] font-semibold">Note:</span> The verification code is valid for <span class="text-[#8A2BE2] font-semibold">10 minutes</span>.
         </p>
         <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed">
             Alternatively, users can sign up using <span class="text-[#8A2BE2] font-semibold">Google</span> or <span class="text-[#8A2BE2] font-semibold">GitHub</span> authentication for quicker access.
@@ -107,7 +107,7 @@
     </div>
 </section>
 <!-- API Usage Section -->
-<section id="api-usage" class="bg-white dark:bg-[#0D0D0D] p-6 border-l-4 border-[#FF6B00] rounded-2xl shadow-md mb-8 scroll-mt-24">
+<section id="api-usage" class="bg-white dark:bg-[#0D0D0D] p-6 border-l-4 border-[#6366F1] rounded-2xl shadow-md mb-8 scroll-mt-24">
     <h2 class="text-3xl font-bold text-black dark:text-[#EAEAEA] mb-4 flex items-center gap-2">
         🚀 API Usage
     </h2>
@@ -131,7 +131,7 @@
     <div class="mb-6">
         <h3 class="text-2xl font-semibold text-black dark:text-[#EAEAEA] mb-2">2. Resume Generation</h3>
         <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed mb-4">
-            Resume generation is limited to <span class="text-[#FF6B00] font-semibold">once per day</span> and a maximum of <span class="text-[#FF6B00] font-semibold">10 times per month</span> for free users.
+            Resume generation is limited to <span class="text-[#6366F1] font-semibold">once per day</span> and a maximum of <span class="text-[#6366F1] font-semibold">10 times per month</span> for free users.
         </p>
         <p class="text-[#333333] dark:text-[#A1A1A1] text-lg leading-relaxed mb-4">
             Once generated, resumes can be:
@@ -149,7 +149,7 @@
     <!-- Additional Note -->
     <div class="bg-gray-100 dark:bg-[#1A1A1A] p-4 rounded-xl mt-6">
         <p class="text-black dark:text-[#EAEAEA] text-lg leading-relaxed">
-            <span class="text-[#FF6B00] font-semibold">Important:</span> For resume generation, if daily or monthly limits are exceeded, users can upgrade to a premium plan to unlock unlimited access.
+            <span class="text-[#6366F1] font-semibold">Important:</span> For resume generation, if daily or monthly limits are exceeded, users can upgrade to a premium plan to unlock unlimited access.
         </p>
     </div>
 </section>

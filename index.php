@@ -165,7 +165,7 @@ require 'includes/settings.php';
         <div class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4">
           <i class="fas fa-cloud-download-alt"></i>
         </div>
-        <h3 class="text-xl font-semibold text-zinc-800 dark:text-white mb-2">Downloadable HTML</h3>
+        <h3 class="text-xl font-semibold text-zinc-800 dark:text-white mb-2">Downloadable Source Code</h3>
         <p class="text-zinc-600 dark:text-zinc-400 text-sm">Export your generated portfolio instantly — ready to host anywhere.</p>
       </div>
     </div>

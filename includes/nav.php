@@ -74,7 +74,7 @@
       <!-- Bottom Area -->
       <div class="p-4 border-t border-zinc-200 dark:border-zinc-800">
         <div class="flex items-center justify-between text-sm text-zinc-500 dark:text-zinc-400">
-          <span>Dark Mode</span>
+          <span>Toggle Mode</span>
           <button id="sidebar-theme-toggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-zinc-200 dark:bg-zinc-700 transition-colors">
             <span class="sr-only">Toggle theme</span>
             <span class="inline-block h-4 w-4 transform rounded-full bg-white dark:bg-indigo-400 translate-x-1 dark:translate-x-6 transition-transform"></span>

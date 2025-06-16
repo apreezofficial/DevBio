@@ -47,7 +47,7 @@
 
   </div>
   <div class="border-t border-zinc-300 dark:border-zinc-700 mt-8 pt-6 text-center text-sm text-zinc-500 dark:text-zinc-400 select-none">
-    &copy; 2025 <?php echo $appName;?>. All rights reserved.
+    &copy; <?php echo date('Y'); ?> <?php echo $appName;?>. All rights reserved.
   </div>
   <div style="height:20px;"></div>
 </footer>

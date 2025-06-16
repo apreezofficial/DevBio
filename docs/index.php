@@ -95,7 +95,6 @@
             This tool will automatically generate a solid README based on your project information.
         </p>
     </div>
-
     <!-- Resume Setup -->
     <div>
         <h3 class="text-2xl font-semibold text-black dark:text-[#EAEAEA] mb-2">4. Resume Setup</h3>

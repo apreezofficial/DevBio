@@ -20,13 +20,6 @@ if (!isset($_SESSION['user_id'])) {
 
 ?>
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateResume']) && isset($_POST['user_id'])) {
-    updateResumeCount($pdo, $_POST['user_id']);
-    echo 'success';
-    exit;
-}
-?>
-<?php
 require_once '../includes/pdo.php'; 
 $user_id = $_SESSION['user_id'];
 $today = date('Y-m-d');
@@ -65,6 +58,12 @@ function updateResumeCount($pdo, $user_id) {
         WHERE user_id = ?");
     
     $stmt->execute([$today, $today, $user_id]);
+}
+?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateResume'])) {
+    updateResumeCount($pdo, $user_id);
+    exit;
 }
 ?>
 <!DOCTYPE html>

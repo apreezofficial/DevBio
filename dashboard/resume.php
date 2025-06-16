@@ -59,7 +59,11 @@ function updateResumeCount($pdo, $user_id) {
     
     $stmt->execute([$today, $today, $user_id]);
 }
-updateResumeCount($pdo, $user_id);
+register_shutdown_function(function() use ($pdo, $user_id) {
+    // Wait for 30 seconds AFTER the page is loaded
+    sleep(5);
+    updateResumeCount($pdo, $user_id);
+});
 ?>
 <!DOCTYPE html>
 <html lang="en" class="dark">

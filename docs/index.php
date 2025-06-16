@@ -16,6 +16,7 @@
 <body class="bg-white text-gray-800 dark:bg-[#0D0D0D] dark:text-gray-100 transition-colors duration-300">
   <?php include '../includes/nav.php';?>
  <!-- Table of Contents -->
+ <div style="height:70px;"></div>
 <div class="bg-white dark:bg-[#0D0D0D] p-6 border-l-4 border-[#8A2BE2] rounded-2xl shadow-md mb-8">
     <h2 class="text-2xl font-bold text-black dark:text-[#EAEAEA] mb-4 flex items-center gap-2">
         📚 Table of Contents

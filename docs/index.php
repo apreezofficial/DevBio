@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard</title>
+    <title>Docs</title>
       <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="/tailwind.js"></script>

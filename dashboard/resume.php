@@ -36,13 +36,71 @@ if (!$limits) {
 }
 
 // Check limits
-if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 1) {
-    
+if ($limits['last_resume_date'] == $today && $limits['resume_count'] >= 10) {
+echo "
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'error',
+            title: 'You can only generate one resume per day',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            background: isDarkMode ? '#1F2937' : '#FEE2E2', // Dark: gray-800, Light: red-100
+            color: isDarkMode ? '#F3F4F6' : '#991B1B',       // Dark: gray-100, Light: red-800
+            customClass: {
+                popup: 'rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-lg text-sm md:text-base',
+                timerProgressBar: 'bg-red-500'
+            },
+            didOpen: (toast) => {
+                toast.style.width = '90%'; // Mobile width
+                toast.style.maxWidth = '400px'; // Max width for larger screens
+            }
+        }).then(() => {
+            window.location.href = 'index.php';
+        });
+    });
+</script>
+";
     exit();
 }
 
 if ($limits['lifetime_count'] >= 10) {
-    echo "<script>alert('You have reached your lifetime limit of 10 resumes.'); window.location.href = 'index.php';</script>";
+    echo "
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'error',
+            title: 'You have reached your monthly limit of 10 resumes',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+            background: isDarkMode ? '#1F2937' : '#FEE2E2', // Dark: gray-800, Light: red-100
+            color: isDarkMode ? '#F3F4F6' : '#991B1B',       // Dark: gray-100, Light: red-800
+            customClass: {
+                popup: 'rounded-2xl px-4 py-3 md:px-6 md:py-4 shadow-lg text-sm md:text-base',
+                timerProgressBar: 'bg-red-500'
+            },
+            didOpen: (toast) => {
+                toast.style.width = '90%'; // Mobile width
+                toast.style.maxWidth = '400px'; // Max width for larger screens
+            }
+        }).then(() => {
+            window.location.href = 'index.php';
+        });
+    });
+</script>
+";
     exit();
 }
 

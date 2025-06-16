@@ -415,13 +415,9 @@ const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
         if (mutation.attributeName === 'class') {
             if (!resultBoxWrapper.classList.contains('hidden')) {
-                alert('Result box is now visible.');
-
+                
                 // Call PHP function via AJAX to the same file
                 updateResumeCount();
-
-                // Optional: Disconnect observer if you want this to run only once
-                // observer.disconnect();
             }
         }
     });
@@ -439,9 +435,9 @@ function updateResumeCount() {
 
     xhr.onload = function() {
         if (xhr.status === 200 && xhr.responseText.trim() === 'success') {
-            alert('Resume count updated successfully.');
+            console.log('wetin corcen you and my console');
         } else {
-            alert('Error updating resume count.');
+         console.log('wetin corcen you and my console');
         }
     };
 }
